@@ -2,7 +2,9 @@ export const updateMenu = async (
   params: any,
   categories: any,
   theme: any,
-  columns: number
+  columns: number,
+  menuType: string,
+  menuName: string
 ) => {
   try {
     // Loop through each category and its items to upload images first
@@ -35,7 +37,9 @@ export const updateMenu = async (
       body: JSON.stringify({
         categories: categoriesWithImageURLs,
         theme,
+        menuType,
         columns,
+        menuName
       }), // Send the updated categories
     });
 

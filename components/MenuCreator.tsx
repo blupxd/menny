@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { act, useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -10,6 +10,7 @@ import {
 import { Button } from "./ui/button";
 import { Edit, Grip, Loader2, Plus, Save, Trash, Undo2, X } from "lucide-react";
 import NewItemForm from "./forms/NewItemForm";
+import NameForm from "./forms/NameForm";
 import { useGenerationStore } from "@/lib/themeSelect";
 import { useStoreCols } from "@/lib/columnSelect";
 import CategoryCreatePopUp from "./CategoryCreatePopUp";
@@ -27,6 +28,8 @@ import {
 import { useCategories } from "@/hooks/useCategories";
 import SortableItem from "./SortableItem";
 import { updateMenu } from "@/lib/handlers";
+import { useSetType } from "@/lib/typeSelect";
+import { useSetName } from "@/lib/nameChanger";
 interface Category {
   categoryName: string;
   items: any[];
@@ -43,38 +46,22 @@ const MenuCreator = ({ categoriesProps }: any) => {
     deepCompare,
     handleDeleteItem,
   } = useCategories(categoriesProps);
-  const [toggleNewItem, setToggleNewItem] = useState<{
-    categoryIndex: number | null;
-  }>({
-    categoryIndex: null,
+  const [actionState, setActionState] = useState({
+    toggleNewItem: { categoryIndex: null },
+    editCategoryName: { categoryIndex: null },
+    deleteCategory: { categoryIndex: null },
+    deleteItem: { categoryIndex: null, itemIndex: null },
+    toggleEditItem: { categoryIndex: null, itemIndex: null },
   });
-  const [deleteCategory, setDeleteCategory] = useState<{
-    categoryIndex: number | null;
-  }>({
-    categoryIndex: null,
-  });
-  const [deleteItem, setDeleteItem] = useState<{
-    categoryIndex: number | null;
-    itemIndex: number | null;
-  }>({
-    categoryIndex: null,
-    itemIndex: null,
-  });
-  const [toggleEditItem, setToggleEditItem] = useState<{
-    categoryIndex: number | null;
-    itemIndex: number | null;
-  }>({
-    categoryIndex: null,
-    itemIndex: null,
-  });
-
   const [showPopup, setShowPopup] = useState(false); // State to manage popup visibility
 
   const togglePopup = () => {
     setShowPopup((prev) => !prev); // Toggle popup visibility
   };
   const { theme } = useGenerationStore();
+  const { menuName } = useSetName()
   const { columns } = useStoreCols();
+  const { menuType } = useSetType();
   const [save, setSave] = useState<boolean>(true);
   useEffect(() => {
     if (categoriesProps) {
@@ -93,7 +80,7 @@ const MenuCreator = ({ categoriesProps }: any) => {
 
   useEffect(() => {
     setSave(false);
-  }, [theme]);
+  }, [theme, columns, menuType, menuName]);
 
   const sensors = useSensors(
     useSensor(MouseSensor, {
@@ -106,8 +93,15 @@ const MenuCreator = ({ categoriesProps }: any) => {
   const [loading, setLoading] = useState<boolean>(false);
   const saveChanges = async () => {
     setLoading(true);
-    setSave(true)
-    const changes = await updateMenu(params, categories, theme.name, columns);
+    setSave(true);
+    const changes = await updateMenu(
+      params,
+      categories,
+      theme.name,
+      columns,
+      menuType,
+      menuName
+    );
     if (changes === true) {
       setLoading(false);
       setSave(true);
@@ -129,9 +123,10 @@ const MenuCreator = ({ categoriesProps }: any) => {
             : category
         )
       );
-      setToggleNewItem({
-        categoryIndex: null,
-      });
+      setActionState((prev) => ({
+        ...prev,
+        toggleNewItem: { categoryIndex: null },
+      }));
     }
   };
   const handleDragEnd = (e: any) => {
@@ -164,15 +159,33 @@ const MenuCreator = ({ categoriesProps }: any) => {
     });
   };
 
+  const handleEditName = (newName: any) => {
+    if (actionState.editCategoryName) {
+      setCategories(
+        categories.map((category: any, index: number) => {
+          if (index === actionState.editCategoryName.categoryIndex)
+            return { ...category, categoryName: newName };
+          return category;
+        })
+      );
+      setActionState((prev) => ({
+        ...prev,
+        editCategoryName: { categoryIndex: null },
+      }));
+    }
+  };
+
   const handleEditItem = (newItem: any) => {
-    if (toggleEditItem) {
+    if (actionState.toggleEditItem) {
       setCategories((prevCategories) =>
         prevCategories.map((category: Category, categoryIndex) => {
-          if (categoryIndex === toggleEditItem.categoryIndex) {
+          if (categoryIndex === actionState.toggleEditItem.categoryIndex) {
             return {
               ...category,
               items: category.items.map((item, itemIndex) => {
-                return itemIndex === toggleEditItem.itemIndex ? newItem : item;
+                return itemIndex === actionState.toggleEditItem.itemIndex
+                  ? newItem
+                  : item;
               }),
             };
           }
@@ -180,13 +193,12 @@ const MenuCreator = ({ categoriesProps }: any) => {
         })
       );
 
-      setToggleEditItem({
-        categoryIndex: null,
-        itemIndex: null,
-      });
+      setActionState((prev) => ({
+        ...prev,
+        toggleEditItem: { categoryIndex: null, itemIndex: null },
+      }));
     }
   };
-  useEffect(() => setSave(false), [columns]);
   const handleAddCategory = (categoryName: string) => {
     setCategories([
       ...categories,
@@ -215,13 +227,43 @@ const MenuCreator = ({ categoriesProps }: any) => {
           >
             <CardHeader className="flex-row items-start justify-between">
               <CardTitle className="text-xl font-semibold flex items-center">
-                {category.categoryName}{" "}
-                <Button variant="ghost" size="icon" className="ml-2 p-0">
-                  <Edit className="w-4 h-4" />
-                </Button>
+                {actionState.editCategoryName.categoryIndex === index ? (
+                  <div className="flex items-center space-x-2">
+                    <NameForm
+                      categoryName={category.categoryName}
+                      handleEditName={(e: any) => handleEditName(e)}
+                    />
+                    <Button
+                      onClick={() =>
+                        setActionState((prev) => ({
+                          ...prev,
+                          editCategoryName: { categoryIndex: null },
+                        }))
+                      }
+                      variant="outline"
+                    >
+                      Cancel <X className="h-4 w-4 ml-2" />
+                    </Button>
+                  </div>
+                ) : (
+                  <>
+                    <p>{category.categoryName}</p>
+                    <Button
+                      onClick={() =>
+                        setActionState((prev: any) => ({
+                          ...prev,
+                          editCategoryName: { categoryIndex: index },
+                        }))
+                      }
+                      variant="ghost"
+                      size="icon"
+                      className="ml-2 p-0"
+                    >
+                      <Edit className="w-4 h-4" />
+                    </Button>
+                  </>
+                )}
               </CardTitle>
-
-              <Grip className="w-4 h-4 mt-0 hover:cursor-grab" />
             </CardHeader>
             <CardContent className={`grid grid-cols-${columns} gap-4`}>
               <DndContext
@@ -235,8 +277,8 @@ const MenuCreator = ({ categoriesProps }: any) => {
                 >
                   {category.items.length > 0 &&
                     category.items.map((item: any, idx: number) =>
-                      toggleEditItem.categoryIndex === index &&
-                      toggleEditItem.itemIndex === idx ? (
+                      actionState.toggleEditItem.categoryIndex === index &&
+                      actionState.toggleEditItem.itemIndex === idx ? (
                         <div className="flex flex-col" key={idx}>
                           <ItemEditForm
                             key={idx}
@@ -249,10 +291,13 @@ const MenuCreator = ({ categoriesProps }: any) => {
                               background: theme?.background,
                             }}
                             onClick={() =>
-                              setToggleEditItem({
-                                categoryIndex: null,
-                                itemIndex: null,
-                              })
+                              setActionState((prev) => ({
+                                ...prev,
+                                toggleEditItem: {
+                                  categoryIndex: index,
+                                  itemIndex: idx,
+                                },
+                              }))
                             }
                             variant="outline"
                             className={`${theme && "hover:bg-opacity-90"} mt-2`}
@@ -262,10 +307,19 @@ const MenuCreator = ({ categoriesProps }: any) => {
                         </div>
                       ) : (
                         <SortableItem
-                          setToggleEditItem={setToggleEditItem}
+                          setToggleEditItem={setActionState((prev: any) => ({
+                            ...prev,
+                            toggleEditItem: { categoryIndex: index, itemIndex: idx },
+                          }))}
                           handleDeleteItem={handleDeleteItem}
-                          deleteItem={deleteItem}
-                          setDeleteItem={setDeleteItem}
+                          deleteItem={actionState.deleteItem}
+                          setDeleteItem={setActionState((prev: any) => ({
+                            ...prev,
+                            deleteItem: {
+                              categoryIndex: index,
+                              itemIndex: idx,
+                            },
+                          }))}
                           theme={theme}
                           key={idx}
                           item={item}
@@ -276,7 +330,7 @@ const MenuCreator = ({ categoriesProps }: any) => {
                     )}
                 </SortableContext>
               </DndContext>
-              {toggleNewItem.categoryIndex === index ? (
+              {actionState.toggleNewItem.categoryIndex === index ? (
                 <div className="flex flex-col w-full">
                   <NewItemForm
                     category={category.categoryName}
@@ -287,7 +341,12 @@ const MenuCreator = ({ categoriesProps }: any) => {
                       borderColor: theme?.primary,
                       background: theme?.background,
                     }}
-                    onClick={() => setToggleNewItem({ categoryIndex: null })}
+                    onClick={() =>
+                      setActionState((prev) => ({
+                        ...prev,
+                        toggleNewItem: { categoryIndex: null },
+                      }))
+                    }
                     variant="outline"
                     className={`${theme && "hover:bg-opacity-90"} mt-2`}
                   >
@@ -306,9 +365,10 @@ const MenuCreator = ({ categoriesProps }: any) => {
                   <h1 className="text-xs mb-4">Add new item?</h1>
                   <Button
                     onClick={() =>
-                      setToggleNewItem({
-                        categoryIndex: index,
-                      })
+                      setActionState((prev: any) => ({
+                        ...prev,
+                        toggleNewItem: { categoryIndex: index },
+                      }))
                     }
                     variant="ghost"
                     className="px-6 hover:text-orange-500 h-12 py-2 border hover:bg-transparent hover:border-orange-500"
@@ -319,12 +379,17 @@ const MenuCreator = ({ categoriesProps }: any) => {
               )}
             </CardContent>
             <CardFooter>
-              {deleteCategory.categoryIndex === index ? (
+              {actionState.deleteCategory.categoryIndex === index ? (
                 <div className="flex items-center space-x-2 ml-auto">
                   <Button
                     onClick={() => {
-                      handleDeleteCategory(deleteCategory.categoryIndex);
-                      setDeleteCategory({ categoryIndex: null });
+                      handleDeleteCategory(
+                        actionState.deleteCategory.categoryIndex
+                      );
+                      setActionState((prev) => ({
+                        ...prev,
+                        deleteCategory: { categoryIndex: null },
+                      }));
                     }}
                     className="max-w-max bg-red-600 hover:bg-red-700 "
                     variant="destructive"
@@ -332,7 +397,12 @@ const MenuCreator = ({ categoriesProps }: any) => {
                     Confirm
                   </Button>
                   <Button
-                    onClick={() => setDeleteCategory({ categoryIndex: null })}
+                    onClick={() =>
+                      setActionState((prev) => ({
+                        ...prev,
+                        deleteCategory: { categoryIndex: null },
+                      }))
+                    }
                     variant="outline"
                   >
                     Cancel <X className="h-4 w-4 ml-2" />
@@ -340,7 +410,12 @@ const MenuCreator = ({ categoriesProps }: any) => {
                 </div>
               ) : (
                 <Button
-                  onClick={() => setDeleteCategory({ categoryIndex: index })}
+                  onClick={() =>
+                    setActionState((prev: any) => ({
+                      ...prev,
+                      deleteCategory: { categoryIndex: index },
+                    }))
+                  }
                   className="max-w-max ml-auto"
                 >
                   Delete <Trash className="w-4 ml-2 h-4" />

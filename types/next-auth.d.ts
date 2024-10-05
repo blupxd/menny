@@ -5,6 +5,7 @@ declare module "next-auth" {
     id: string;
     menuName: String;
     theme: String;
+    menuType: String;
     categories: Category[]
   }
   interface Category {

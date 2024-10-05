@@ -53,8 +53,10 @@ export async function GET(req: NextRequest, { params }: any) {
     // Return the menu name along with categories and items
     return NextResponse.json(
       {
+        id: menu.id,
         menuName: menu.menuName,
         categories: menu.categories,
+        menuType: menu.menuType,
         theme: menu.theme, // Include theme in the response
       },
       { status: 200 }
@@ -69,7 +71,7 @@ export async function PATCH(req: NextRequest, { params }: any) {
   try {
     const { menuId } = params;
     const body = await req.json();
-    const { categories, theme, columns } = body;
+    const { categories, theme, columns, menuType, menuName } = body;
 
     const session = await getServerSession(authOptions);
     if (!session) {
@@ -104,6 +106,8 @@ export async function PATCH(req: NextRequest, { params }: any) {
     await db.menu.update({
       where: { id: menuId },
       data: {
+        menuName: menuName || userHasMenu.menuName,
+        menuType: menuType || userHasMenu.menuType,
         theme: theme || userHasMenu.theme, // Update theme if provided
       },
     });

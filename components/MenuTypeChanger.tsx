@@ -8,28 +8,38 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { menuTypes } from "@/constants"; // Assuming menuTypes has type and icon
 import { ChevronDown } from "lucide-react";
+import { useSetType } from "@/lib/typeSelect";
+
 const MenuTypeChanger = () => {
+  const { setType, menuType } = useSetType();
   const [selectedType, setSelectedType] = useState(menuTypes[0]); // Track the selected type
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  // Sync selectedType with menuType
+  useEffect(() => {
+    const newType = menuTypes.find(type => type.type === menuType);
+    if (newType) {
+      setSelectedType(newType);
+    }
+  }, [menuType]);
+
   return (
     <div className="max-w-56 min-w-56 flex flex-col">
       <h1 className="text-sm mb-2 font-extralight">Types</h1>
       <DropdownMenu open={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>
         <DropdownMenuTrigger asChild>
           <Button
-            onClick={() => (isOpen ? setIsOpen(false) : setIsOpen(true))}
+            onClick={() => setIsOpen(!isOpen)}
             variant="outline"
           >
             <selectedType.icon className="w-4 h-4 mr-2" />
             {selectedType.type}{" "}
             <ChevronDown
-              className={`w-4 h-4 ml-auto ${
-                isOpen && "rotate-180"
-              } transition-all duration-100 ease-in-out`}
+              className={`w-4 h-4 ml-auto ${isOpen && "rotate-180"} transition-all duration-100 ease-in-out`}
             />
           </Button>
         </DropdownMenuTrigger>
@@ -37,10 +47,11 @@ const MenuTypeChanger = () => {
           <DropdownMenuLabel>Select your type</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuRadioGroup
-            value={selectedType.type}
+            value={menuType}
             onValueChange={(value) => {
-              const newType = menuTypes.find((type) => type.type === value);
+              const newType = menuTypes.find(type => type.type === value);
               if (newType) {
+                setType(newType.type);
                 setSelectedType(newType); // Update selected type
               }
             }}

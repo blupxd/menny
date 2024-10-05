@@ -1,45 +1,53 @@
 import type { Config } from "tailwindcss";
 import { themes } from "./constants";
-const colorClasses = themes.flatMap(theme => [
+const colorClasses = themes.flatMap((theme) => [
   theme.primary,
   theme.secondary,
   theme.background,
-  theme.text
+  theme.text,
 ]);
 
 const config: Config = {
-  mode: 'jit', 
+  mode: "jit",
   darkMode: ["class"],
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  safelist: [
-    ...colorClasses.map((color) => `${color}`)
-  ],
+  safelist: [...colorClasses.map((color) => `${color}`)],
   theme: {
     extend: {
       colors: {
         candy: {
-          primary: "#FF6B6B",
-          secondary: "#FFE66D",
+          primary: "#de336c", // Matches themes candy
+          secondary: "#ffee6e", // Matches themes candy
+          light: "#ff8da3", // Lighter shade for candy
+          dark: "#b62b58", // Darker shade for candy
         },
         aquamarine: {
-          primary: "#4ECDC4",
-          secondary: "#1A535C",
+          primary: "#338270", // Matches themes aquamarine
+          secondary: "#8ad4c3", // Matches themes aquamarine
+          light: "#4cd3c1", // Lighter shade for aquamarine
+          dark: "#1e4d4b", // Darker shade for aquamarine
         },
         lighting: {
-          primary: "#FF9F1C",
-          secondary: "#2EC4B6",
+          primary: "#f79d1e", // Matches themes lighting
+          secondary: "#121212", // Matches themes lighting
+          light: "#f9b77b", // Lighter shade for lighting
+          dark: "#c47d14", // Darker shade for lighting
         },
         gravestone: {
-          primary: "#2B2D42",
-          secondary: "#8D99AE",
+          primary: "#2B2D42", // Matches themes gravestone
+          secondary: "#8D99AE", // Matches themes gravestone
+          light: "#4B4E66", // Lighter shade for gravestone
+          dark: "#1f202f", // Darker shade for gravestone
         },
         candycane: {
-          primary: "#EDF2F4",
-          secondary: "#EF233C",
+          primary: "#261718", // Matches themes candycane
+          secondary: "#d11746", // Matches themes candycane
+          light: "#3a1d1d", // Lighter shade for candycane
+          dark: "#1a0d0d", // Darker shade for candycane
         },
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
