@@ -176,7 +176,7 @@ const MenuCreator = ({ categoriesProps }: any) => {
   };
 
   const handleEditItem = (newItem: any) => {
-    if (actionState.toggleEditItem) {
+    if (actionState.toggleEditItem !== null) {
       setCategories((prevCategories) =>
         prevCategories.map((category: Category, categoryIndex) => {
           if (categoryIndex === actionState.toggleEditItem.categoryIndex) {
@@ -208,6 +208,7 @@ const MenuCreator = ({ categoriesProps }: any) => {
       },
     ]);
   };
+  console.log(actionState)
   return (
     <div className="grid gap-4 grid-cols-2 p-6">
       <div className="flex justify-end col-span-2 items-center space-x-4">
@@ -294,8 +295,8 @@ const MenuCreator = ({ categoriesProps }: any) => {
                               setActionState((prev) => ({
                                 ...prev,
                                 toggleEditItem: {
-                                  categoryIndex: index,
-                                  itemIndex: idx,
+                                  categoryIndex: null,
+                                  itemIndex: null,
                                 },
                               }))
                             }
@@ -307,19 +308,9 @@ const MenuCreator = ({ categoriesProps }: any) => {
                         </div>
                       ) : (
                         <SortableItem
-                          setToggleEditItem={setActionState((prev: any) => ({
-                            ...prev,
-                            toggleEditItem: { categoryIndex: index, itemIndex: idx },
-                          }))}
+                          setActionState={(e:any) => setActionState(e)}
                           handleDeleteItem={handleDeleteItem}
                           deleteItem={actionState.deleteItem}
-                          setDeleteItem={setActionState((prev: any) => ({
-                            ...prev,
-                            deleteItem: {
-                              categoryIndex: index,
-                              itemIndex: idx,
-                            },
-                          }))}
                           theme={theme}
                           key={idx}
                           item={item}

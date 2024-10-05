@@ -9,19 +9,32 @@ const SortableItem = ({
   idx,
   index,
   theme,
-  setToggleEditItem,
   handleDeleteItem,
   deleteItem,
-  setDeleteItem,
+  setActionState,
 }: any) => {
   const { attributes, listeners, setNodeRef, transform, active, transition } =
     useSortable({ id: `${index}-${idx}` });
 
   // Function to convert a File to a URL
   const convertFileToUrl = (file: File) => URL.createObjectURL(file);
+  const handleToggleEditItem = (categoryIndex: any, itemIndex: any) => {
+    setActionState((prev: any) => ({
+      ...prev,
+      toggleEditItem: { categoryIndex, itemIndex },
+    }));
+  };
+
+  const handleSetDeleteItem = (categoryIndex: any, itemIndex: any) => {
+    setActionState((prev: any) => ({
+      ...prev,
+      deleteItem: { categoryIndex, itemIndex },
+    }));
+  };
 
   // Determine if item.image is a File or a string (URL)
-  const imageUrl = item.image instanceof File ? convertFileToUrl(item.image) : item.image;
+  const imageUrl =
+    item.image instanceof File ? convertFileToUrl(item.image) : item.image;
 
   return (
     <div
@@ -58,7 +71,7 @@ const SortableItem = ({
           <ImagePlus className="w-10 h-10" />
         </Button>
       )}
-      <div className="flex flex-col justify-between h-full -mt-1 flex-grow">
+      <div className="flex flex-col justify-between -mt-1 flex-grow h-20">
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-semibold">{item.itemName}</h2>
           <p
@@ -71,20 +84,17 @@ const SortableItem = ({
           </p>
         </div>
         {item.itemDescription && (
-          <p className="text-xs w-48 text-wrap text-ellipsis overflow-hidden flex-grow">{item.itemDescription}</p>
+          <p className="text-xs w-48 text-wrap text-ellipsis overflow-hidden flex-grow">
+            {item.itemDescription}
+          </p>
         )}
-        <div className="flex items-start space-x-4 max-h-max">
+        <div className="flex items-start space-x-4">
           <Button
             style={{
               color: theme?.secondary,
               background: theme?.primary,
             }}
-            onClick={() =>
-              setToggleEditItem({
-                categoryIndex: index,
-                itemIndex: idx,
-              })
-            }
+            onClick={() => handleToggleEditItem(index, idx)}
             variant="secondary"
             size="icon"
             className={theme && "hover:opacity-60"}
@@ -96,11 +106,8 @@ const SortableItem = ({
             <div className="flex items-center space-x-2 text-xs">
               <Button
                 onClick={() => {
-                  setDeleteItem({
-                    categoryIndex: null,
-                    itemIndex: null,
-                  });
                   handleDeleteItem(index, idx);
+                  handleSetDeleteItem(null, null);
                 }}
                 variant="ghost"
                 className="bg-red-600 hover:bg-red-700 text-xs text-white"
@@ -108,12 +115,7 @@ const SortableItem = ({
                 Confirm <Trash className="h-4 w-4 ml-2" />
               </Button>
               <Button
-                onClick={() =>
-                  setDeleteItem({
-                    categoryIndex: null,
-                    itemIndex: null,
-                  })
-                }
+                onClick={() => handleSetDeleteItem(null, null)}
                 variant="outline"
                 className=" text-xs"
               >
@@ -122,12 +124,7 @@ const SortableItem = ({
             </div>
           ) : (
             <Button
-              onClick={() =>
-                setDeleteItem({
-                  categoryIndex: index,
-                  itemIndex: idx,
-                })
-              }
+              onClick={() => handleSetDeleteItem(index, idx)}
               variant="destructive"
               className="bg-red-600"
               size="icon"

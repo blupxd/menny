@@ -47,9 +47,8 @@ const ItemEditForm = ({ handleEditItem, itemValues }: any) => {
         style={{
           borderColor: theme?.primary,
           background: theme?.secondary,
-          color: theme?.text,
         }}
-        className="w-full flex items-start space-x-4 p-4 rounded-lg border bg-black/50"
+        className="w-full flex items-start space-x-4 p-4 text-white rounded-lg border bg-black/50"
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <FileUploader

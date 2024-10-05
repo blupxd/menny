@@ -66,6 +66,7 @@ export const useCategories = (categoriesProps: any) => {
     categoryIndex: number | null,
     itemIndex: number | null
   ) => {
+    console.log(categoryIndex, itemIndex)
     if (categoryIndex !== null && itemIndex !== null) {
       setCategories((prevCategories) =>
         prevCategories.map((category, idx) => {
@@ -80,7 +81,7 @@ export const useCategories = (categoriesProps: any) => {
       );
     }
   };
-  const  canUndo = pointer - 1 > 0
+  const canUndo = pointer - 1 > 0
   return {
     categories,
     setCategories,
