@@ -70,6 +70,35 @@ export const uploadImage = async (file: File): Promise<string | undefined> => {
     return undefined;
   }
 };
+
+export const handleSubscription = async (
+  id: string,
+  productId: number,
+  storeId: number
+
+) => {
+  try {
+    const response = await fetch("/api/payments/subscribe", {
+      method: "POST",
+      body: JSON.stringify({
+        userId: id,
+        productId: productId,
+        storeId: storeId
+      }),
+    });
+    if (!response.ok) {
+      throw new Error("Failed to subscribe");
+    }
+    // Await the response to resolve the JSON data
+    const { checkoutURL } = await response.json();
+    // Now you can use checkoutURL
+    window.open(checkoutURL, "_blank");
+    console.log(checkoutURL);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const getProducts = async () => {
   try {
     const response = await fetch("/api/payments", {

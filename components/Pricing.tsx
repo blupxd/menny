@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardFooter, CardTitle } from "./ui/card";
-import { getProducts } from "@/lib/handlers";
+import { getProducts, handleSubscription } from "@/lib/handlers";
 import { CircleCheckBig } from "lucide-react";
 import Link from "next/link";
 import { Button, buttonVariants } from "./ui/button";
@@ -25,16 +25,6 @@ const Pricing = ({ session }: any) => {
 
     fetchProducts();
   }, []);
-  const handleCheckout = (variantId: string) => {
-    const store = "menny"; // Postavite svoj STORE
-
-    // Generišite checkout URL sa prilagođenim parametrima
-    const checkoutUrl = `https://${store}.lemonsqueezy.com/checkout/buy/${variantId}`;
-
-    // Preusmerite korisnika na checkout URL
-    if (!session.user) router.push("/login");
-    router.push(checkoutUrl);
-  };
   // Helper to render the benefits list
   const renderBenefits = (productName: string) => {
     const benefits = productBenefitsMap[productName];
@@ -85,7 +75,7 @@ const Pricing = ({ session }: any) => {
             </div>
             <CardFooter className="pt-4 px-0 pb-0">
               <Button
-                onClick={() => handleCheckout("544879")}
+                onClick={() => handleSubscription(id, product.id, product.attributes.store_id)}
                 variant="secondary"
               >
                 Buy Now
