@@ -39,12 +39,12 @@ export const updateMenu = async (
         theme,
         menuType,
         columns,
-        menuName
+        menuName,
       }), // Send the updated categories
     });
 
     if (!response.ok) return false;
-    return true
+    return true;
   } catch (error: any) {
     console.error(error.message);
   }
@@ -68,5 +68,25 @@ export const uploadImage = async (file: File): Promise<string | undefined> => {
   } catch (error) {
     console.error("Error uploading image:", error);
     return undefined;
+  }
+};
+export const getProducts = async () => {
+  try {
+    const response = await fetch("/api/payments", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+
+    if (response.ok) {
+      console.log(data);
+      return data;
+    } else {
+      console.error("Error updating menu", data.message);
+    }
+  } catch (error) {
+    console.error("Error during update:", error);
   }
 };

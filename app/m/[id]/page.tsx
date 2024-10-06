@@ -2,6 +2,7 @@
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import CategoryCard from "../../../components/CategoryCard";
+import Image from "next/image";
 
 // Define possible themes as a union type
 type Theme = "candy" | "aquamarine" | "lighting" | "gravestone" | "candycane";
@@ -58,7 +59,10 @@ const Page = () => {
   }, []);
 
   // Define the theme colors
-  const colors: Record<Theme, { primary: string; secondary: string; light: string; dark: string }> = {
+  const colors: Record<
+    Theme,
+    { primary: string; secondary: string; light: string; dark: string }
+  > = {
     candy: {
       primary: "#f3de4a",
       secondary: "#ebe191",
@@ -93,25 +97,37 @@ const Page = () => {
 
   const themeColors = () => {
     // Check if the menuData theme exists in the colors object
-    return menuData?.theme && colors[menuData.theme] ? colors[menuData.theme] : colors.candy; // Fallback to candy theme
+    return menuData?.theme && colors[menuData.theme]
+      ? colors[menuData.theme]
+      : colors.candy; // Fallback to candy theme
   };
 
   const colorsSelected = themeColors(); // Get the theme colors
 
   return menuData?.categories ? (
     <div
-      className="flex flex-col p-4 md:p-12 min-h-screen"
+      className="flex flex-col p-4 md:p-12 min-h-screen relative"
       style={{
         backgroundColor: colorsSelected.dark, // Set the background color inline
       }}
     >
-      <h1 style={{borderColor: colorsSelected.light}} className="text-5xl border-b-2 text-center mx-auto pt-6 max-w-max pb-2 mb-12 italic">{menuData.menuName}</h1>
-      {menuData.categories.map((category, idx) => (
-        <CategoryCard category={category} theme={colorsSelected} key={idx} />
-      ))}
-      <div className="bg-black/5 rounded-lg md:mt-12 mt-auto justify-end p-6">
-        <p className="text-white/30 text-xs text-center m-auto">Powered by Menny</p>
+      <div className="flex flex-col z-10 min-h-screen">
+        <h1
+          style={{ borderColor: colorsSelected.light }}
+          className="text-5xl border-b-2 text-center mx-auto pt-6 max-w-max pb-2 mb-12 font-black"
+        >
+          {menuData.menuName} MENU
+        </h1>
+        {menuData.categories.map((category, idx) => (
+          <CategoryCard category={category} theme={colorsSelected} key={idx} />
+        ))}
+        <div className="z-10 rounded-lg md:mt-12 mt-auto justify-end p-6">
+          <p className="text-white/30 text-xs text-center m-auto">
+            Powered by Menny
+          </p>
+        </div>
       </div>
+      <Image alt="bg" src="/assets/dummy.jpg" fill className="object-cover opacity-5" />
     </div>
   ) : (
     <div>The menu is not completed yet</div>
