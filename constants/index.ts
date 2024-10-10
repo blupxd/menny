@@ -86,7 +86,7 @@ export const menuTypes = [
 export const menuItems = [
   {
     label: "View Profile",
-    link: "/profile",
+    link: "/dashboard/profile",
     icon: User,
   },
   {

@@ -36,7 +36,7 @@ export const authOptions: NextAuthOptions = {
         if (!existingUser) {
           return null;
         }
-        if(!existingUser.password) return null
+        if (!existingUser.password) return null;
         if (existingUser.password) {
           const passwordMatch = await compare(
             credentials.password,
@@ -50,13 +50,13 @@ export const authOptions: NextAuthOptions = {
           id: existingUser.id + "",
           email: existingUser.email + "",
           name: existingUser.name + "",
-          lastname: existingUser.lastname + "",
+          lastname: existingUser.lastname + ""
         };
       },
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, trigger, session, user }) {
       if (user) {
         return {
           ...token,
@@ -65,6 +65,10 @@ export const authOptions: NextAuthOptions = {
           name: user.name,
           lastname: user.lastname,
         };
+      }
+      if (trigger === "update" && session) {
+        token = { ...token, user: session };
+        return token;
       }
       return token;
     },

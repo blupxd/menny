@@ -1,4 +1,7 @@
+import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { getUserSubscriptionPlan } from "@/lib/subscriptions";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -58,9 +61,17 @@ export async function POST(request: NextRequest) {
         body: JSON.stringify({
           data: {
             type: "checkouts",
+            attributes: {
+              checkout_data: {
+                email: user.email,
+                custom: {
+                  user_id: user.id,
+                },
+              },
+            },
             relationships: {
-              store: { data: { type: "stores", id: storeId +"" } },
-              variant: { data: { type: "variants", id: variantIdToUse +""} },
+              store: { data: { type: "stores", id: storeId + "" } },
+              variant: { data: { type: "variants", id: variantIdToUse + "" } },
             },
           },
         }),
@@ -86,4 +97,18 @@ export async function POST(request: NextRequest) {
     console.log("Error creating checkout:", err);
     return NextResponse.json({ message: err.message || err }, { status: 500 });
   }
+}
+export async function GET(req: NextRequest) {
+  const session = await getServerSession(authOptions)
+
+  if(!session || !session.user) return NextResponse.json({message:"Unauthorized"}, {status:401})
+
+    try {
+      const userId = session.user.id
+      const subscriptionPlan = await getUserSubscriptionPlan(userId)
+      return NextResponse.json({subscriptionPlan}, {status:200})
+    } catch (error) {
+      return NextResponse.json({message:"An error occured"})
+      
+    }
 }

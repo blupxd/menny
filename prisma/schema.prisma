@@ -14,19 +14,22 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  email         String?   @unique
-  name          String?
-  password      String?
-  lastname      String?
-  emailVerified DateTime?
-  terms         Boolean   @default(true)
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  menus         Menu[]
+  id             String    @id @default(cuid())
+  email          String?   @unique
+  name           String?
+  password       String?
+  lastname       String?
+  plan           String    @default("free")
+  subscriptionId String?   @unique
+  planExpires    DateTime?
+  emailVerified  DateTime?
+  terms          Boolean   @default(true)
+  image          String?
+  accounts       Account[]
+  sessions       Session[]
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  menus          Menu[]
 }
 
 model Menu {

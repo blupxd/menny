@@ -6,18 +6,18 @@ declare module "next-auth" {
     menuName: String;
     theme: String;
     menuType: String;
-    categories: Category[]
+    categories: Category[];
   }
   interface Category {
     id: string;
-    items: Item[]
-    categoryName: string
+    items: Item[];
+    categoryName: string;
   }
   interface Item {
     id: string;
     itemName: string;
     image: string;
-    itemDescription: string
+    itemDescription: string;
   }
   interface User extends DefaultUser {
     id: string;

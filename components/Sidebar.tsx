@@ -1,9 +1,7 @@
-"use client";
-import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import React from "react";
 import { Button, buttonVariants } from "./ui/button";
-import { EllipsisVertical, LogOutIcon, Plus, Stars } from "lucide-react";
+import { EllipsisVertical, Plus, Stars } from "lucide-react";
 import { Separator } from "./ui/separator";
 import Link from "next/link";
 import {
@@ -14,26 +12,41 @@ import {
 import { AccordionContent } from "./ui/accordion";
 import { Badge } from "./ui/badge";
 import { accordionMenu, menuItems } from "@/constants";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import LogOutButton from "./LogOutButton";
 
-const Sidebar = () => {
-  const session = useSession();
-
+const Sidebar = async () => {
+  const session = await getServerSession(authOptions);
+  const handlePlanColor = (plan: string) => {
+    switch (plan) {
+      case "free":
+        return "text-orange-300";
+      case "premium":
+        return "text-purple-500";
+      case "standard":
+        return "text-indigo-400";
+      default:
+        return "text-gray-300";
+    }
+  };
+  
   return (
     <div className="px-6 py-4 border-r flex flex-col bg-stone-950 min-h-screen min-w-[300px] w-[300px] fixed">
       <div className="flex items-center space-x-4 my-4">
         {/* Avatar Section */}
         <div className="rounded-full relative bg-orange-500 overflow-hidden h-8 w-8 flex items-center justify-center">
-          {session.data?.user.image ? (
+          {session?.user.image ? (
             <Image
               fill
               className="object-cover"
-              src={session.data?.user.image}
-              alt={`${session.data?.user.name || "User"}'s profile picture`}
+              src={session?.user.image}
+              alt={`${session?.user.name || "User"}'s profile picture`}
             />
           ) : (
             <p>
-              {session.data?.user.name?.[0] || "U"}
-              {session.data?.user.lastname?.[0] || "N"}
+              {session?.user.name?.[0] || "U"}
+              {session?.user.lastname?.[0] || "N"}
             </p>
           )}
         </div>
@@ -41,12 +54,16 @@ const Sidebar = () => {
         {/* Name Section */}
         <div className="flex-grow flex flex-col">
           <h1 className="text-sm">
-            {session.data?.user.name} {session.data?.user.lastname}
+            {session?.user.name} {session?.user.lastname}
           </h1>
-          <p className="text-orange-500 text-xs items-center flex underline">
-            You have free plan
+          {/* <p
+            className={`${handlePlanColor(
+              session?.user.plan + ""
+            )} text-xs items-center flex italic`}
+          >
+            You have plan
             <Stars className="ml-2 w-4 h-4" />
-          </p>
+          </p> */}
         </div>
 
         {/* Button Section */}
@@ -77,13 +94,20 @@ const Sidebar = () => {
             Menu Tools <Plus className="h-4 w-4" />
           </AccordionTrigger>
           {accordionMenu.map((menu, index) => (
-            <AccordionContent key={index} className="text-xs flex flex-col pb-2">
-              <Link style={{
-                justifyContent: "start"
-              }} href={menu.link}
-                className={`flex justify-start items-center hover:bg-orange-500 ${buttonVariants({
-                  variant: "ghost"
-                })}`}
+            <AccordionContent
+              key={index}
+              className="text-xs flex flex-col pb-2"
+            >
+              <Link
+                style={{
+                  justifyContent: "start",
+                }}
+                href={menu.link}
+                className={`flex justify-start items-center hover:bg-orange-500 ${buttonVariants(
+                  {
+                    variant: "ghost",
+                  }
+                )}`}
               >
                 <menu.icon className="mr-4 h-4 w-4" />
                 {menu.label}
@@ -101,18 +125,7 @@ const Sidebar = () => {
 
       {/* Sign Out Button positioned at the bottom */}
       <div className="mt-auto">
-        <Button
-          className="hover:bg-neutral-900 text-orange-500 font-normal"
-          onClick={() =>
-            signOut({
-              redirect: true,
-              callbackUrl: `${window.location.origin}/login`,
-            })
-          }
-          variant={"ghost"}
-        >
-          <LogOutIcon className="mr-2 h-4 w-4 " /> Sign Out
-        </Button>
+        <LogOutButton />
       </div>
     </div>
   );
