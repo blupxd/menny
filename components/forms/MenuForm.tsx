@@ -55,7 +55,6 @@ const MenuForm = () => {
             placeholder="Enter name for your new menu"
           />
           <GradientButton
-            className="text-zinc-900 bg-white"
             isLoading={false}
           >
             Create
