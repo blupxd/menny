@@ -4,9 +4,9 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Form } from "@/components/ui/form";
 import CustomFormField, { FormFieldType } from "../CustomFormField";
-import SubmitButton from "../SubmitButton";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
+import GradientButton from "../GradientButton";
 
 const formSchema = z.object({
   menuName: z.string().min(3, { message: "This field has to be filled." }),
@@ -54,12 +54,12 @@ const MenuForm = () => {
             label="Menu Name"
             placeholder="Enter name for your new menu"
           />
-          <SubmitButton
+          <GradientButton
             className="text-zinc-900 bg-white"
             isLoading={false}
           >
             Create
-          </SubmitButton>
+          </GradientButton>
         </div>
       </form>
     </Form>
