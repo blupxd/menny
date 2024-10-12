@@ -15,7 +15,6 @@ import { Badge } from "./ui/badge";
 import { accordionMenu, menuItems } from "@/constants";
 import LogOutButton from "./LogOutButton";
 import { AnimatePresence, motion } from "framer-motion";
-import { SessionProviderProps } from "next-auth/react";
 
 const MobileSidebar = ({ session, plan }: any) => {
   const [menu, setMenu] = useState<boolean>(false);
