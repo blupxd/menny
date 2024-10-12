@@ -43,16 +43,16 @@ const Pricing = ({ session }: any) => {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 w-full gap-4">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 w-full">
       <h1 className="text-center md:col-span-3 text-5xl my-6 font-semibold bg-gradient-to-b from-gray-300 to-purple-300 bg-clip-text text-transparent">
         Plans and Prices
       </h1>
-      <Card className="shadow-sm shadow-gray-800 bg-transparent flex flex-col min-h-[18rem] border-purple-800/20 border p-10 rounded-lg bg-gradient-to-tr from-purple-950/10 to-cyan-600/10">
+      <Card className="text-card-foreground bg-gradient-to-tr from-purple-950/10 to-cyan-600/10 border-purple-800/20 border shadow-sm shadow-gray-800 bg-transparent flex flex-col min-h-[12rem] w-full p-10 rounded-lg backdrop-blur-xl">
         <div>
           <CardTitle className="text-base items-start font-light flex-col space-x-2">
             Free Plan
             <div className="flex items-end mt-2 font-semibold">
-              <p className="text-3xl ">Free</p>
+              <p className="text-3xl">Free</p>
             </div>
           </CardTitle>
           <div className="w-full py-2 space-x-2 flex items-center">
@@ -79,7 +79,7 @@ const Pricing = ({ session }: any) => {
               product.attributes.name === "Premium"
                 ? "bg-gradient-to-tr from-purple-600/20 to-cyan-700/20 border-purple-600/50 border-2"
                 : "bg-gradient-to-tr from-purple-950/10 to-cyan-600/10 border-purple-800/20 border"
-            } shadow-sm shadow-gray-800 bg-transparent flex flex-col min-h-[12rem]  p-10 rounded-lg backdrop-blur-xl`}
+            } shadow-sm shadow-gray-800 bg-transparent flex flex-col min-h-[12rem] w-full p-10 rounded-lg backdrop-blur-xl`}
             key={product.id}
           >
             {product.attributes.name === "Premium" && (

@@ -25,15 +25,9 @@ export async function GET(req: NextRequest, { params }: { params: Params }) {
   try {
     const { menuId } = params;
 
-    const session = await getServerSession(authOptions);
-    if (!session) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-    }
-
     const menu = await db.menu.findFirst({
       where: {
         id: menuId,
-        userId: session.user.id,
       },
       orderBy: {
         createdAt: 'asc',
@@ -53,7 +47,7 @@ export async function GET(req: NextRequest, { params }: { params: Params }) {
     if (!menu) {
       return NextResponse.json(
         {
-          message: "User doesn't have this menu in their account!",
+          message: "This menu doesn't exist!",
         },
         { status: 403 }
       );

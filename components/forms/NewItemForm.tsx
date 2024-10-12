@@ -21,16 +21,9 @@ const formSchema = z.object({
 });
 
 // Define the props for the NewItemForm component
-interface NewItemFormProps {
-  handleAddItem: (newItem: {
-    itemName: string;
-    itemDescription: string;
-    price: string;
-    image: any;
-  }) => void;
-}
 
-const NewItemForm: React.FC<NewItemFormProps> = ({ handleAddItem }) => {
+
+const NewItemForm = ({ handleAddItem }: any) => {
   const { theme } = useGenerationStore();
 
   const form = useForm<z.infer<typeof formSchema>>({

@@ -6,6 +6,7 @@ import { z } from "zod";
 import { Form } from "../ui/form";
 import CustomFormField, { FormFieldType } from "../CustomFormField";
 import { Button } from "../ui/button";
+import { Check } from "lucide-react";
 // Define the schema for the form
 const formSchema = z.object({
   categoryName: z.string().min(3, { message: "This field has to be filled." }),
@@ -32,15 +33,15 @@ const NameForm: React.FC<NameFormProps> = ({ handleEditName, categoryName }) => 
 
   return (
     <Form {...form}>
-      <form className="w-96" onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="flex space-x-4">
+      <form className="w-48 md:w-96" onSubmit={form.handleSubmit(onSubmit)}>
+        <div className="flex space-x-2">
           <CustomFormField
             fieldType={FormFieldType.INPUT}
             control={form.control}
             name="categoryName"
             placeholder="New category name"
           />
-          <Button type="submit">Confirm</Button>
+          <Button type="submit" size="icon"><Check className="w-4 h-4"/></Button>
         </div>
       </form>
     </Form>

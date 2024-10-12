@@ -11,12 +11,24 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { PartyPopper, Plus, UtensilsCrossed } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import GradientLink from "./GradientLink";
 
-const MenuPage = () => {
-  const [showPopup, setShowPopup] = useState(false); // State to manage popup visibility
 
+const MenuPage = ({plan}:any) => {
+  const [showPopup, setShowPopup] = useState(false); // State to manage popup visibility
+  const getMenuLimitMessage = (plan: string | undefined) => {
+    switch (plan) {
+      case "free":
+        return "You have 1 menu available to create";
+      case "standard":
+        return "You have 3 menus available to create";
+      case "premium":
+        return "You have 5 menus available to create";
+      default:
+        return "You have 1 menu available to create";
+    }
+  };
   const togglePopup = () => {
     setShowPopup((prev) => !prev); // Toggle popup visibility
   };
@@ -28,7 +40,7 @@ const MenuPage = () => {
           Create or edit existing menus
         </h1>
         <p className="text-sm font-light text-neutral-500">
-          (You have 1 menu available to create)
+          {getMenuLimitMessage(plan)}
         </p>
         <GradientLink
           href="/pricing"
@@ -38,7 +50,7 @@ const MenuPage = () => {
         </GradientLink>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 z-10">
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 z-10">
         <MenuCards />
         <Card className="h-52 bg-gradient-to-tr from-purple-800/10 to-cyan-800/10">
           <CardHeader>

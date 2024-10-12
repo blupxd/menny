@@ -91,8 +91,9 @@ export const handleSubscription = async (
     // Await the response to resolve the JSON data
     const { checkoutURL } = await response.json();
     // Now you can use checkoutURL
-    window.open(checkoutURL, "_blank");
-    console.log(checkoutURL);
+    setTimeout(() => {
+      window.open(checkoutURL, "_blank");
+    })
   } catch (error) {
     console.error(error);
   }

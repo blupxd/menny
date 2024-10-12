@@ -1,7 +1,7 @@
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, buttonVariants } from "./ui/button";
-import { EllipsisVertical, Plus } from "lucide-react";
+import { EllipsisVertical, Plus, Stars } from "lucide-react";
 import { Separator } from "./ui/separator";
 import Link from "next/link";
 import {
@@ -15,26 +15,31 @@ import { accordionMenu, menuItems } from "@/constants";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import LogOutButton from "./LogOutButton";
+import { getUserSubscriptionPlan } from "@/lib/subscriptions";
 
 const Sidebar = async () => {
   const session = await getServerSession(authOptions);
-  // const handlePlanColor = (plan: string) => {
-  //   switch (plan) {
-  //     case "free":
-  //       return "text-orange-300";
-  //     case "premium":
-  //       return "text-purple-500";
-  //     case "standard":
-  //       return "text-indigo-400";
-  //     default:
-  //       return "text-gray-300";
-  //   }
-  // };
-  
+  const subscription = session
+    ? await getUserSubscriptionPlan(session?.user.id + "")
+    : null;
+
+  const handlePlanColor = (plan: string) => {
+    switch (plan) {
+      case "free":
+        return "text-orange-300";
+      case "premium":
+        return "text-purple-700";
+      case "standard":
+        return "text-purple-400";
+      default:
+        return "text-gray-300";
+    }
+  };
   return (
     <div className="px-6 py-4 border-r md:flex hidden flex-col bg-gradient-to-tr from-purple-950/10 to-cyan-600/10 min-h-screen min-w-[300px] w-[300px] fixed">
       <div className="flex items-center space-x-4 my-4">
         {/* Avatar Section */}
+
         <div className="rounded-full relative bg-purple-700 overflow-hidden h-8 w-8 flex items-center justify-center">
           {session?.user.image ? (
             <Image
@@ -56,14 +61,16 @@ const Sidebar = async () => {
           <h1 className="text-sm">
             {session?.user.name} {session?.user.lastname}
           </h1>
-          {/* <p
-            className={`${handlePlanColor(
-              session?.user.plan + ""
-            )} text-xs items-center flex italic`}
-          >
-            You have plan
-            <Stars className="ml-2 w-4 h-4" />
-          </p> */}
+          {subscription?.plan && (
+            <p
+              className={`${handlePlanColor(
+                subscription?.plan + ""
+              )} text-xs items-center flex font-semibold`}
+            >
+              You have {subscription.plan} plan
+              <Stars className="ml-2 w-4 h-4" />
+            </p>
+          )}
         </div>
 
         {/* Button Section */}
