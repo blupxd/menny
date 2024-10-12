@@ -13,7 +13,7 @@ const MenuCreatePopUp: React.FC<MenuCreatePopUpProps> = ({ show, onClose }) => {
   if (!show) return null; // Do not render the popup if `show` is false
 
   return (
-    <div className="fixed top-0 right-0 flex items-center justify-center left-[300px] z-10 bottom-0 bg-black/80">
+    <div className="fixed top-0 right-0 flex items-center justify-center left-0 md:left-[300px] z-30 bottom-0 bg-black/80">
       <Button onClick={onClose} className="absolute top-6 right-6 bg-transparent" size="icon" variant="secondary">
         <X className="w-6 h-6" />
       </Button>
