@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useEffect } from "react";
+import React from "react";
 import { Button, buttonVariants } from "./ui/button";
 import { EllipsisVertical, Plus, Stars } from "lucide-react";
 import { Separator } from "./ui/separator";

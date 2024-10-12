@@ -2,7 +2,7 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import { Button, buttonVariants } from "./ui/button";
-import { AlignLeft, EllipsisVertical, Plus, X } from "lucide-react";
+import { AlignLeft, EllipsisVertical, Plus, Stars, X } from "lucide-react";
 import { Separator } from "./ui/separator";
 import Link from "next/link";
 import {
@@ -17,9 +17,22 @@ import LogOutButton from "./LogOutButton";
 import { AnimatePresence, motion } from "framer-motion";
 import { SessionProviderProps } from "next-auth/react";
 
-const MobileSidebar = ({ session }: SessionProviderProps) => {
+const MobileSidebar = ({ session, plan }: any) => {
   const [menu, setMenu] = useState<boolean>(false);
 
+
+  const handlePlanColor = (plan: string) => {
+    switch (plan) {
+      case "free":
+        return "text-orange-300";
+      case "premium":
+        return "text-purple-700";
+      case "standard":
+        return "text-purple-400";
+      default:
+        return "text-gray-300";
+    }
+  };
   return (
     <div className="relative md:hidden">
       {/* Toggle Button */}
@@ -77,6 +90,16 @@ const MobileSidebar = ({ session }: SessionProviderProps) => {
                   <h1 className="text-sm">
                     {session?.user.name} {session?.user.lastname}
                   </h1>
+                  {plan && (
+                    <p
+                      className={`${handlePlanColor(
+                        plan
+                      )} text-xs items-center flex font-semibold`}
+                    >
+                      You have {plan} plan
+                      <Stars className="ml-2 w-4 h-4" />
+                    </p>
+                  )}
                 </div>
 
                 <Button

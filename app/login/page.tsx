@@ -46,7 +46,7 @@ const LoginPage = () => {
         width={1440}
         height={1080}
         alt="background"
-        className="w-1/2"
+        className="w-1/2 md:block hidden"
       />
     </div>
   );

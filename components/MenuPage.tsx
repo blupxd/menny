@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { PartyPopper, Plus, UtensilsCrossed } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import GradientLink from "./GradientLink";
 
 
