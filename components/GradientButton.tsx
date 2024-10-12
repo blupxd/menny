@@ -1,6 +1,5 @@
 import React, { ReactNode } from "react";
 import { Button } from "./ui/button";
-import Image from "next/image";
 import { Loader2 } from "lucide-react";
 
 interface GradientButtonProps {

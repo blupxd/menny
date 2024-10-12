@@ -20,7 +20,6 @@ interface NameFormProps {
 }
 
 const NameForm: React.FC<NameFormProps> = ({ handleEditName, categoryName }) => {
-  const { theme } = useGenerationStore();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
