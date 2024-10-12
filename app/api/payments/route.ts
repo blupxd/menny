@@ -1,8 +1,6 @@
-import { authOptions } from "@/lib/auth";
-import { getServerSession } from "next-auth";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 const lsUrl = "https://api.lemonsqueezy.com/v1/products";
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     const response = await fetch(lsUrl, {
       method: "GET",
@@ -23,18 +21,17 @@ export async function GET(req: NextRequest) {
     const data = await response.json();
     const productData = data.data;
     return NextResponse.json({ productData }, { status: 200 });
-  } catch (error: any) {
-    return NextResponse.json(
-      { message: `Failed to fetch data: ${error.message}` },
-      { status: 500 }
-    );
+  } catch (error: unknown) {
+    const errorMessage =
+      error instanceof Error ? error.message : "An error occurred!";
+    return NextResponse.json({ message: errorMessage }, { status: 500 });
   }
 }
 
 // export async function POST(req: NextRequest) {
 //   const session = await getServerSession(authOptions);
 //   const body = await req.json()
-//   const { variant_id } = body; 
+//   const { variant_id } = body;
 //   if (!session)
 //     return NextResponse.json({ message: "Not authenticated" }, { status: 401 });
 

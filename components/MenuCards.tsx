@@ -14,6 +14,11 @@ import { Button, buttonVariants } from "./ui/button";
 import Link from "next/link";
 import GradientLink from "./GradientLink";
 
+interface Menu {
+  menuName:string;
+  id: string;
+}
+
 const MenuCards = () => {
   const [menus, setMenus] = useState([]);
   const fetchData = async () => {
@@ -30,8 +35,8 @@ const MenuCards = () => {
       const data = await response.json();
       console.log(data);
       setMenus(data);
-    } catch (error: any) {
-      console.error(error.message);
+    } catch (error: unknown) {
+      console.error(error);
     }
   };
   useEffect(() => {
@@ -39,7 +44,7 @@ const MenuCards = () => {
   }, []);
   return (
     menus &&
-    menus.map((menu: any, index: number) => (
+    menus.map((menu: Menu, index: number) => (
       <Card
         key={index}
         className="h-52 justify-between flex flex-col bg-gradient-to-tr from-purple-800/10 to-cyan-800/10"

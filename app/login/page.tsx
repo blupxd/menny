@@ -32,7 +32,7 @@ const LoginPage = () => {
           </GoogleSignInButton>
         </div>
         <div className="flex justify-center text-xs mt-4 items-center gap-2 font-light">
-          <p>Don't have an account?</p>
+          <p>Don&apos;t have an account?</p>
           <Link
             href="/register"
             className="text-purple-300 underline font-semibold"

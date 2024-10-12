@@ -4,11 +4,21 @@ import { Button } from "@/components/ui/button";
 import { themes } from "@/constants";
 import { useGenerationStore } from "@/lib/themeSelect";
 
+
+
+interface Theme {
+  name:string;
+  primary: string;
+  secondary: string;
+  background: string;
+  text: string;
+}
+
 const ThemePicker = () => {
   const { theme, setTheme } = useGenerationStore();
   const [selectedTheme, setSelectedTheme] = useState<string | null>(null); // State to track selected theme
 
-  const selectTheme = (theme: any) => {
+  const selectTheme = (theme: Theme) => {
     setTheme(theme);
     setSelectedTheme(theme.name);
   };
@@ -18,7 +28,7 @@ const ThemePicker = () => {
     <div className="flex flex-col w-full">
       <h1 className="text-sm max-h-max font-extralight">Themes</h1>
       <div className="flex space-x-4 max-h-max mt-4">
-        {themes.map((theme, index) => (
+        {themes.map((theme:Theme, index: number) => (
           <Button
             key={index}
             variant="default" // Highlight selected theme

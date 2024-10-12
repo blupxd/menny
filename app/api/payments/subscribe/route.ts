@@ -93,22 +93,25 @@ export async function POST(request: NextRequest) {
       { checkoutURL: checkoutData.data.attributes.url },
       { status: 200 }
     );
-  } catch (err: any) {
-    console.log("Error creating checkout:", err);
-    return NextResponse.json({ message: err.message || err }, { status: 500 });
+  } catch (error: unknown) {
+    const errorMessage =
+      error instanceof Error ? error.message : "An error occurred!";
+    return NextResponse.json({ message: errorMessage }, { status: 500 });
   }
 }
-export async function GET(req: NextRequest) {
-  const session = await getServerSession(authOptions)
+export async function GET() {
+  const session = await getServerSession(authOptions);
 
-  if(!session || !session.user) return NextResponse.json({message:"Unauthorized"}, {status:401})
+  if (!session || !session.user)
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
 
-    try {
-      const userId = session.user.id
-      const subscriptionPlan = await getUserSubscriptionPlan(userId)
-      return NextResponse.json({subscriptionPlan}, {status:200})
-    } catch (error) {
-      return NextResponse.json({message:"An error occured"})
-      
-    }
+  try {
+    const userId = session.user.id;
+    const subscriptionPlan = await getUserSubscriptionPlan(userId);
+    return NextResponse.json({ subscriptionPlan }, { status: 200 });
+  } catch (error: unknown) {
+    const errorMessage =
+      error instanceof Error ? error.message : "An error occurred!";
+    return NextResponse.json({ message: errorMessage }, { status: 500 });
+  }
 }

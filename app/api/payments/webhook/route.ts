@@ -5,7 +5,6 @@ import crypto from "crypto";
 import { Readable } from "stream";
 import { db } from "@/lib/db";
 
-
 export async function POST(request: NextRequest) {
   try {
     // Extract and parse the request body
@@ -92,7 +91,7 @@ export async function POST(request: NextRequest) {
             plan: subscription.data.attributes.product_name.toLowerCase(),
           },
         });
-        
+
         return NextResponse.json({ message: "Success!" }, { status: 200 });
       }
       case "subscription_updated": {
@@ -128,11 +127,9 @@ export async function POST(request: NextRequest) {
       { message: "Webhook received successfully" },
       { status: 200 }
     );
-  } catch (error: any) {
-    console.error("Error processing webhook:", error);
-    return NextResponse.json(
-      { message: "Server error", error: error.message },
-      { status: 500 }
-    );
+  } catch (error: unknown) {
+    const errorMessage =
+      error instanceof Error ? error.message : "An error occurred!";
+    return NextResponse.json({ message: errorMessage }, { status: 500 });
   }
 }

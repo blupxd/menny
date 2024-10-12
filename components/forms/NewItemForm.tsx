@@ -10,6 +10,7 @@ import { Button } from "../ui/button";
 import { useGenerationStore } from "@/lib/themeSelect";
 import { FileUploader } from "../FileUploader";
 
+// Define the schema for the form
 const formSchema = z.object({
   itemName: z.string().min(3, { message: "This field has to be filled." }),
   image: z.any(),
@@ -19,8 +20,19 @@ const formSchema = z.object({
   price: z.string().min(1, { message: "You have to enter a value" }),
 });
 
-const NewItemForm = ({ handleAddItem }: any) => {
+// Define the props for the NewItemForm component
+interface NewItemFormProps {
+  handleAddItem: (newItem: {
+    itemName: string;
+    itemDescription: string;
+    price: string;
+    image: any;
+  }) => void;
+}
+
+const NewItemForm: React.FC<NewItemFormProps> = ({ handleAddItem }) => {
   const { theme } = useGenerationStore();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -38,7 +50,7 @@ const NewItemForm = ({ handleAddItem }: any) => {
       price: values.price,
       image: values.image,
     };
-    handleAddItem(newItem); // Call the function to add item to the category
+    handleAddItem(newItem);
   };
 
   return (
@@ -55,9 +67,8 @@ const NewItemForm = ({ handleAddItem }: any) => {
         <FileUploader
           image={""}
           onChange={(files) => {
-            // Handle the file change here (you can set the image URL or the image directly)
             const image = files.length > 0 ? files[0] : null;
-            form.setValue("image", image); // Set the image in the form state
+            form.setValue("image", image);
           }}
         />
         <div className="flex flex-col h-full lg:mt-0 mt-4 justify-between space-y-4 w-full">

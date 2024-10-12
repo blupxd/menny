@@ -4,13 +4,19 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Form } from "@/components/ui/form";
 import CustomFormField, { FormFieldType } from "../CustomFormField";
-import SubmitButton from "../SubmitButton";
+import GradientButton from "../GradientButton";
 
+// Define the schema for the form
 const formSchema = z.object({
   categoryName: z.string().min(3, { message: "This field has to be filled." }),
 });
 
-const CategoryForm = ({ handleAddCategory }: any) => {
+// Define the props for the CategoryForm component
+interface CategoryFormProps {
+  handleAddCategory: (categoryName: string) => void; // Prop to handle adding a category
+}
+
+const CategoryForm: React.FC<CategoryFormProps> = ({ handleAddCategory }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -33,9 +39,9 @@ const CategoryForm = ({ handleAddCategory }: any) => {
             label="Enter category name"
             placeholder="Enter name for your new category"
           />
-          <SubmitButton className="text-zinc-900 bg-white" isLoading={false}>
+          <GradientButton isLoading={false}>
             Create
-          </SubmitButton>
+          </GradientButton>
         </div>
       </form>
     </Form>

@@ -17,12 +17,10 @@ export async function GET() {
       },
     });
     return NextResponse.json(menus, { status: 201 });
-  } catch (error: any) {
-    console.error("Error details:", error);
-    return NextResponse.json(
-      { message: error.message || "An error occurred!" },
-      { status: 500 }
-    );
+  } catch (error: unknown) {
+    const errorMessage =
+      error instanceof Error ? error.message : "An error occurred!";
+    return NextResponse.json({ message: errorMessage }, { status: 500 });
   }
 }
 export async function DELETE(req: Request) {
@@ -34,7 +32,7 @@ export async function DELETE(req: Request) {
     const body = await req.json();
     const { id } = body;
     const userId = session.user?.id;
-    const menus = await db.menu.delete({
+    await db.menu.delete({
       where: {
         userId: userId,
         id,
@@ -44,12 +42,10 @@ export async function DELETE(req: Request) {
       { message: "Successfully deleted" },
       { status: 201 }
     );
-  } catch (error: any) {
-    console.error("Error details:", error);
-    return NextResponse.json(
-      { message: error.message || "An error occurred!" },
-      { status: 500 }
-    );
+  } catch (error: unknown) {
+    const errorMessage =
+      error instanceof Error ? error.message : "An error occurred!";
+    return NextResponse.json({ message: errorMessage }, { status: 500 });
   }
 }
 
@@ -82,11 +78,9 @@ export async function POST(req: Request) {
       },
       { status: 201 }
     );
-  } catch (error: any) {
-    console.error("Error details:", error);
-    return NextResponse.json(
-      { message: error.message || "An error occurred!" },
-      { status: 500 }
-    );
+  } catch (error: unknown) {
+    const errorMessage =
+      error instanceof Error ? error.message : "An error occurred!";
+    return NextResponse.json({ message: errorMessage }, { status: 500 });
   }
 }

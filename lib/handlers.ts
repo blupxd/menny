@@ -1,3 +1,5 @@
+import { Category } from "next-auth";
+
 export const updateMenu = async (
   params: any,
   categories: any,
@@ -7,30 +9,28 @@ export const updateMenu = async (
   menuName: string
 ) => {
   try {
-    // Loop through each category and its items to upload images first
     const categoriesWithImageURLs = await Promise.all(
-      categories.map(async (category: any) => {
+      categories.map(async (category: Category) => {
         const updatedItems = await Promise.all(
           category.items.map(async (item: any) => {
             if (item.image && item.image instanceof File) {
               const newUrl = await uploadImage(item.image);
               return {
                 ...item,
-                image: newUrl, // Replace the image file with the uploaded URL
+                image: newUrl,
               };
             }
-            return item; // If no image upload is needed, return the item as is
+            return item;
           })
         );
 
         return {
           ...category,
-          items: updatedItems, // Replace the items with updated image URLs
+          items: updatedItems,
         };
       })
     );
 
-    // After images are uploaded, proceed with the PATCH request
     const response = await fetch(`/api/menu/${params.menuId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -40,13 +40,13 @@ export const updateMenu = async (
         menuType,
         columns,
         menuName,
-      }), // Send the updated categories
+      }),
     });
 
     if (!response.ok) return false;
     return true;
-  } catch (error: any) {
-    console.error(error.message);
+  } catch (error: unknown) {
+    console.error(error);
   }
 };
 
@@ -75,7 +75,6 @@ export const handleSubscription = async (
   id: string,
   productId: number,
   storeId: number
-
 ) => {
   try {
     const response = await fetch("/api/payments/subscribe", {
@@ -83,7 +82,7 @@ export const handleSubscription = async (
       body: JSON.stringify({
         userId: id,
         productId: productId,
-        storeId: storeId
+        storeId: storeId,
       }),
     });
     if (!response.ok) {

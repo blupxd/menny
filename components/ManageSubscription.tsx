@@ -48,7 +48,7 @@ export default function ManageSubscription(props: {
   // If the user is subscribed, let him cancel his plan
   const handleCancelSubscription = async () => {
     try {
-      const response = await fetch("/api/payments/cancel-subscription", {
+      await fetch("/api/payments/cancel-subscription", {
         method: "POST",
         body: JSON.stringify({
           userId: userId,

@@ -1,7 +1,28 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import Image from "next/image";
-const CategoryCard = ({ category, theme }: any) => {
+interface Category {
+  categoryName: string;
+  items: any[];
+  columns: number;
+}
+interface Theme {
+  primary: string;
+  dark: string;
+  light: string;
+  secondary: string;
+}
+interface Item {
+  itemName: string;
+  description: string;
+  price: string;
+  image: string;
+}
+interface Props {
+  category: Category;
+  theme: Theme;
+}
+const CategoryCard = ({ category, theme }: Props) => {
   return (
     <Card
       style={{
@@ -15,7 +36,7 @@ const CategoryCard = ({ category, theme }: any) => {
         </CardTitle>
       </CardHeader>
       <CardContent className={`grid grid-cols-${category.columns} p-2 md:p-6 gap-2 md:gap-6`}>
-        {category.items.map((item: any, key: any) => (
+        {category.items.map((item: Item, key: number) => (
           <Card style={{
             borderColor: theme.light,
             background: theme.secondary
@@ -23,7 +44,7 @@ const CategoryCard = ({ category, theme }: any) => {
             <CardContent className="flex p-2 md:p-4 items-start">
               {item.image && (
                 <Image
-                  alt={item.name}
+                  alt={item.itemName}
                   width={100}
                   height={100}
                   style={{

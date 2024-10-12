@@ -16,11 +16,16 @@ import GradientLink from "./GradientLink";
 import { AnimatePresence, motion } from "framer-motion";
 import GradientButton from "./GradientButton";
 
-const CreatorNav = ({ name, id }: any) => {
+interface Props {
+  name: string | undefined;
+  id: string | undefined;
+}
+
+const CreatorNav = ({ name, id }: Props) => {
   const [editName, setEditName] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const { setName, menuName } = useSetName();
-  useEffect(() => setName(name), [name]);
+  useEffect(() => setName(name!), [name]);
   return (
     <div className="flex p-6 flex-col sticky top-0 bg-black z-10 border-b ">
       <span className="bg-gradient-to-tr from-cyan-900/10 -z-10 to-cyan-800/10 absolute left-0 right-0 top-0 bottom-0" />

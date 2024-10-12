@@ -8,21 +8,31 @@ import CustomFormField, { FormFieldType } from "../CustomFormField";
 import { Button } from "../ui/button";
 import { useGenerationStore } from "@/lib/themeSelect";
 
+// Define the schema for the form
 const formSchema = z.object({
   categoryName: z.string().min(3, { message: "This field has to be filled." }),
 });
 
-const NameForm = ({ handleEditName, categoryName }: any) => {
+// Define the props for the NameForm component
+interface NameFormProps {
+  handleEditName: (name: string) => void;
+  categoryName: string;
+}
+
+const NameForm: React.FC<NameFormProps> = ({ handleEditName, categoryName }) => {
   const { theme } = useGenerationStore();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       categoryName: categoryName,
     },
   });
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     handleEditName(values.categoryName);
   };
+
   return (
     <Form {...form}>
       <form className="w-96" onSubmit={form.handleSubmit(onSubmit)}>

@@ -15,22 +15,23 @@ import { Badge } from "./ui/badge";
 import { accordionMenu, menuItems } from "@/constants";
 import LogOutButton from "./LogOutButton";
 import { AnimatePresence, motion } from "framer-motion";
+import { SessionProviderProps } from "next-auth/react";
 
-const MobileSidebar = ({ session }: any) => {
+const MobileSidebar = ({ session }: SessionProviderProps) => {
   const [menu, setMenu] = useState<boolean>(false);
 
-  const handlePlanColor = (plan: string) => {
-    switch (plan) {
-      case "free":
-        return "text-orange-300";
-      case "premium":
-        return "text-purple-500";
-      case "standard":
-        return "text-indigo-400";
-      default:
-        return "text-gray-300";
-    }
-  };
+  // const handlePlanColor = (plan: string) => {
+  //   switch (plan) {
+  //     case "free":
+  //       return "text-orange-300";
+  //     case "premium":
+  //       return "text-purple-500";
+  //     case "standard":
+  //       return "text-indigo-400";
+  //     default:
+  //       return "text-gray-300";
+  //   }
+  // };
 
   return (
     <nav

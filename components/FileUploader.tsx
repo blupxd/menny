@@ -7,7 +7,7 @@ import { Button } from "./ui/button";
 
 type FileUploaderProps = {
   onChange: (files: File[]) => void;
-  image: any;
+  image: File | string;
 };
 
 export const FileUploader = ({ onChange, image }: FileUploaderProps) => {

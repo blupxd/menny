@@ -17,6 +17,7 @@ const GoogleSignInButton: FC<GoogleSignInButton> = ({ children }) => {
         callbackUrl: "http://localhost:3000/dashboard",
       });
     } catch (error) {
+      console.log(error)
       setIsLoading(false);
     } finally {
       setIsLoading(false);

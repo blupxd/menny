@@ -4,7 +4,31 @@ import { Edit, Grip, ImagePlus, Trash, X } from "lucide-react";
 import Image from "next/image";
 import { Button } from "./ui/button";
 
-const SortableItem = ({
+interface Item {
+  image: File | string; // Item image can be a File object or a string (URL)
+  itemName: string; // Name of the item
+  price: string; // Price of the item
+  itemDescription?: string; // Optional description of the item
+}
+
+interface Theme {
+  primary: string; // Primary color for the theme
+  secondary: string; // Secondary color for the theme
+  text: string; // Text color for the theme
+  background: string; // Background color for the theme
+}
+
+interface SortableItemProps {
+  item: Item; // The item being sorted
+  idx: number; // Index of the item in the list
+  index: number; // Current index from the sortable context
+  theme: Theme; // Theme object for styling
+  handleDeleteItem: (index: number, idx: number) => void; // Function to handle deletion of item
+  deleteItem: { categoryIndex: number | null; itemIndex: number | null }; // State for delete confirmation
+  setActionState: React.Dispatch<React.SetStateAction<any>>; // State setter for action state
+}
+
+const SortableItem: React.FC<SortableItemProps> = ({
   item,
   idx,
   index,
@@ -12,20 +36,27 @@ const SortableItem = ({
   handleDeleteItem,
   deleteItem,
   setActionState,
-}: any) => {
+}) => {
   const { attributes, listeners, setNodeRef, transform, active, transition } =
     useSortable({ id: `${index}-${idx}` });
 
   // Function to convert a File to a URL
-  const convertFileToUrl = (file: File) => URL.createObjectURL(file);
-  const handleToggleEditItem = (categoryIndex: any, itemIndex: any) => {
+  const convertFileToUrl = (file: File): string => URL.createObjectURL(file);
+
+  const handleToggleEditItem = (
+    categoryIndex: number | null,
+    itemIndex: number | null
+  ) => {
     setActionState((prev: any) => ({
       ...prev,
       toggleEditItem: { categoryIndex, itemIndex },
     }));
   };
 
-  const handleSetDeleteItem = (categoryIndex: any, itemIndex: any) => {
+  const handleSetDeleteItem = (
+    categoryIndex: number | null,
+    itemIndex: number | null
+  ) => {
     setActionState((prev: any) => ({
       ...prev,
       deleteItem: { categoryIndex, itemIndex },

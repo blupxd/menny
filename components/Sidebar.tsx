@@ -18,18 +18,18 @@ import LogOutButton from "./LogOutButton";
 
 const Sidebar = async () => {
   const session = await getServerSession(authOptions);
-  const handlePlanColor = (plan: string) => {
-    switch (plan) {
-      case "free":
-        return "text-orange-300";
-      case "premium":
-        return "text-purple-500";
-      case "standard":
-        return "text-indigo-400";
-      default:
-        return "text-gray-300";
-    }
-  };
+  // const handlePlanColor = (plan: string) => {
+  //   switch (plan) {
+  //     case "free":
+  //       return "text-orange-300";
+  //     case "premium":
+  //       return "text-purple-500";
+  //     case "standard":
+  //       return "text-indigo-400";
+  //     default:
+  //       return "text-gray-300";
+  //   }
+  // };
   
   return (
     <div className="px-6 py-4 border-r md:flex hidden flex-col bg-gradient-to-tr from-purple-950/10 to-cyan-600/10 min-h-screen min-w-[300px] w-[300px] fixed">

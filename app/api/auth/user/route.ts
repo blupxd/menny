@@ -47,16 +47,15 @@ export async function POST(req: Request) {
       },
     });
 
-    const { password: newUserPassword, ...rest } = newUser;
+    const { password: _, ...rest } = newUser;
     return NextResponse.json(
       { user: rest, message: "User created successfully" },
       { status: 201 }
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error details:", error);
-    return NextResponse.json(
-      { message: error.message || "An error occurred!" },
-      { status: 500 }
-    );
+    const errorMessage =
+      error instanceof Error ? error.message : "An error occurred!";
+    return NextResponse.json({ message: errorMessage }, { status: 500 });
   }
 }

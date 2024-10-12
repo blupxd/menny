@@ -4,14 +4,24 @@ import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 interface Item {
-  id: string;
+  id?: string;
   itemName: string;
   itemDescription: string;
   price: string;
   image: string;
 }
 
-export async function GET(req: NextRequest, { params }: any) {
+interface Category {
+  id?: string;
+  categoryName: string;
+  items: Item[];
+}
+
+interface Params {
+  menuId: string;
+}
+
+export async function GET(req: NextRequest, { params }: { params: Params }) {
   try {
     const { menuId } = params;
 
@@ -20,23 +30,22 @@ export async function GET(req: NextRequest, { params }: any) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    // Ensure that the user owns the menu
     const menu = await db.menu.findFirst({
       where: {
         id: menuId,
         userId: session.user.id,
       },
       orderBy: {
-        createdAt: 'asc', // Order by creation date (ascending)
+        createdAt: 'asc',
       },
       include: {
         categories: {
           include: {
-            items: true, // Include the related items in the result
+            items: true,
           },
-          orderBy:{
-            createdAt: 'desc'
-          }
+          orderBy: {
+            createdAt: 'desc',
+          },
         },
       },
     });
@@ -50,24 +59,24 @@ export async function GET(req: NextRequest, { params }: any) {
       );
     }
 
-    // Return the menu name along with categories and items
     return NextResponse.json(
       {
         id: menu.id,
         menuName: menu.menuName,
         categories: menu.categories,
         menuType: menu.menuType,
-        theme: menu.theme, // Include theme in the response
+        theme: menu.theme,
       },
       { status: 200 }
     );
-  } catch (error: any) {
-    return NextResponse.json({ message: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    const errorMessage =
+      error instanceof Error ? error.message : "An error occurred!";
+    return NextResponse.json({ message: errorMessage }, { status: 500 });
   }
 }
 
-// PATCH method to update menu, categories, and items
-export async function PATCH(req: NextRequest, { params }: any) {
+export async function PATCH(req: NextRequest, { params }: { params: Params }) {
   try {
     const { menuId } = params;
     const body = await req.json();
@@ -78,7 +87,6 @@ export async function PATCH(req: NextRequest, { params }: any) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    // Ensure that the user owns the menu
     const userHasMenu = await db.menu.findFirst({
       where: {
         id: menuId,
@@ -87,7 +95,7 @@ export async function PATCH(req: NextRequest, { params }: any) {
       include: {
         categories: {
           include: {
-            items: true, // Include items in the query
+            items: true,
           },
         },
       },
@@ -102,23 +110,20 @@ export async function PATCH(req: NextRequest, { params }: any) {
       );
     }
 
-    // Update menu with theme and columns
     await db.menu.update({
       where: { id: menuId },
       data: {
         menuName: menuName || userHasMenu.menuName,
         menuType: menuType || userHasMenu.menuType,
-        theme: theme || userHasMenu.theme, // Update theme if provided
+        theme: theme || userHasMenu.theme,
       },
     });
 
-    // First, delete categories and items that are not in the updated list
     const existingCategoryIds = userHasMenu.categories.map((cat) => cat.id);
     const incomingCategoryNames = categories.map(
-      (cat: any) => cat.categoryName
+      (cat: Category) => cat.categoryName
     );
 
-    // Delete categories that are not in the incoming categories
     await db.category.deleteMany({
       where: {
         id: {
@@ -132,20 +137,17 @@ export async function PATCH(req: NextRequest, { params }: any) {
       },
     });
 
-    // Loop through incoming categories to upsert or delete items
     await Promise.all(
-      categories.map(async (category: any) => {
-        // Find existing category
+      categories.map(async (category: Category) => {
         const existingCategory = await db.category.findFirst({
           where: { categoryName: category.categoryName, menuId },
-          include: { items: true }, // Include items to check for deletions
+          include: { items: true },
         });
+
         if (existingCategory) {
-          // Update category and its items
           const existingItemIds = existingCategory.items.map((item) => item.id);
           const incomingItemIds = category.items.map((item: Item) => item.id);
 
-          // Delete items that are no longer in the updated list
           await db.item.deleteMany({
             where: {
               id: {
@@ -155,16 +157,15 @@ export async function PATCH(req: NextRequest, { params }: any) {
               },
             },
           });
-          console.log(category)
-          // Upsert items (update existing or create new)
+
           await db.category.update({
             where: { id: existingCategory.id },
             data: {
               categoryName: category.categoryName,
-              columns: columns || existingCategory.columns, // Update columns at category level
+              columns: columns || existingCategory.columns,
               items: {
                 upsert: category.items.map((item: Item) => ({
-                  where: { id: item.id ?? "" }, // Use `id` for updates, skip if no `id`
+                  where: { id: item.id ?? "" },
                   update: {
                     itemName: item.itemName,
                     itemDescription: item.itemDescription,
@@ -182,11 +183,10 @@ export async function PATCH(req: NextRequest, { params }: any) {
             },
           });
         } else {
-          // Create new category and items
           await db.category.create({
             data: {
               categoryName: category.categoryName,
-              columns: columns || 2, // Use default columns if not provided
+              columns: columns || 2,
               menu: { connect: { id: menuId } },
               items: {
                 create: category.items.map((item: Item) => ({
@@ -206,7 +206,9 @@ export async function PATCH(req: NextRequest, { params }: any) {
       { message: "Menu updated successfully" },
       { status: 200 }
     );
-  } catch (error: any) {
-    return NextResponse.json({ message: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    const errorMessage =
+      error instanceof Error ? error.message : "An error occurred!";
+    return NextResponse.json({ message: errorMessage }, { status: 500 });
   }
 }

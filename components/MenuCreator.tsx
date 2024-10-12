@@ -30,9 +30,15 @@ import SortableItem from "./SortableItem";
 import { updateMenu } from "@/lib/handlers";
 import { useSetType } from "@/lib/typeSelect";
 import { useSetName } from "@/lib/nameChanger";
+interface Item {
+  itemName: string;
+  price: string;
+  description: string;
+  image: string;
+}
 interface Category {
   categoryName: string;
-  items: any[];
+  items: Item[];
 }
 
 const MenuCreator = ({ categoriesProps }: any) => {
@@ -59,7 +65,7 @@ const MenuCreator = ({ categoriesProps }: any) => {
     setShowPopup((prev) => !prev); // Toggle popup visibility
   };
   const { theme } = useGenerationStore();
-  const { menuName } = useSetName()
+  const { menuName } = useSetName();
   const { columns } = useStoreCols();
   const { menuType } = useSetType();
   const [save, setSave] = useState<boolean>(true);
@@ -107,14 +113,14 @@ const MenuCreator = ({ categoriesProps }: any) => {
       setSave(true);
     }
   };
-  const getPosition = (id: any) => {
+  const getPosition = (id: string) => {
     const [categoryIndex, itemIndex] = id.split("-");
     return {
       categoryIndex: parseInt(categoryIndex),
       itemIndex: parseInt(itemIndex),
     };
   };
-  const handleAddItem = (newItem: any, categoryIndex: number | null) => {
+  const handleAddItem = (newItem: Item, categoryIndex: number | null) => {
     if (categoryIndex !== null) {
       setCategories((prevCategories: Category[]) =>
         prevCategories.map((category: Category, idx: number) =>
@@ -159,38 +165,40 @@ const MenuCreator = ({ categoriesProps }: any) => {
     });
   };
 
-  const handleEditName = (newName: any) => {
+  const handleEditName = (newName: string) => {
     if (actionState.editCategoryName) {
       setCategories(
-        categories.map((category: any, index: number) => {
+        categories.map((category: Category, index: number) => {
           if (index === actionState.editCategoryName.categoryIndex)
             return { ...category, categoryName: newName };
           return category;
         })
       );
-      setActionState((prev) => ({
+      setActionState((prev: any) => ({
         ...prev,
         editCategoryName: { categoryIndex: null },
       }));
     }
   };
 
-  const handleEditItem = (newItem: any) => {
+  const handleEditItem = (newItem: Item) => {
     if (actionState.toggleEditItem !== null) {
       setCategories((prevCategories) =>
-        prevCategories.map((category: Category, categoryIndex) => {
-          if (categoryIndex === actionState.toggleEditItem.categoryIndex) {
-            return {
-              ...category,
-              items: category.items.map((item, itemIndex) => {
-                return itemIndex === actionState.toggleEditItem.itemIndex
-                  ? newItem
-                  : item;
-              }),
-            };
+        prevCategories.map(
+          (category: Category, categoryIndex: number | null) => {
+            if (categoryIndex === actionState.toggleEditItem.categoryIndex) {
+              return {
+                ...category,
+                items: category.items.map((item: Item, itemIndex: number | null) => {
+                  return itemIndex === actionState.toggleEditItem.itemIndex
+                    ? newItem
+                    : item;
+                }),
+              };
+            }
+            return category;
           }
-          return category;
-        })
+        )
       );
 
       setActionState((prev) => ({
@@ -208,7 +216,7 @@ const MenuCreator = ({ categoriesProps }: any) => {
       },
     ]);
   };
-  console.log(actionState)
+  console.log(actionState);
   return (
     <div className="grid gap-4 grid-cols-2 p-6">
       <div className="flex justify-end col-span-2 items-center space-x-4">
@@ -274,10 +282,10 @@ const MenuCreator = ({ categoriesProps }: any) => {
               >
                 <SortableContext
                   strategy={rectSwappingStrategy}
-                  items={category.items.map((item, idx) => `${index}-${idx}`)}
+                  items={category.items.map((_, idx: number) => `${index}-${idx}`)}
                 >
                   {category.items.length > 0 &&
-                    category.items.map((item: any, idx: number) =>
+                    category.items.map((item: Item, idx: number) =>
                       actionState.toggleEditItem.categoryIndex === index &&
                       actionState.toggleEditItem.itemIndex === idx ? (
                         <div className="flex flex-col" key={idx}>
@@ -308,7 +316,7 @@ const MenuCreator = ({ categoriesProps }: any) => {
                         </div>
                       ) : (
                         <SortableItem
-                          setActionState={(e:any) => setActionState(e)}
+                          setActionState={(e: any) => setActionState(e)}
                           handleDeleteItem={handleDeleteItem}
                           deleteItem={actionState.deleteItem}
                           theme={theme}
@@ -377,7 +385,7 @@ const MenuCreator = ({ categoriesProps }: any) => {
                       handleDeleteCategory(
                         actionState.deleteCategory.categoryIndex
                       );
-                      setActionState((prev) => ({
+                      setActionState((prev: any) => ({
                         ...prev,
                         deleteCategory: { categoryIndex: null },
                       }));
@@ -389,7 +397,7 @@ const MenuCreator = ({ categoriesProps }: any) => {
                   </Button>
                   <Button
                     onClick={() =>
-                      setActionState((prev) => ({
+                      setActionState((prev:any) => ({
                         ...prev,
                         deleteCategory: { categoryIndex: null },
                       }))
