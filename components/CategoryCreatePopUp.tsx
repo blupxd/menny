@@ -25,18 +25,18 @@ const CategoryCreatePopUp: React.FC<CategoryCreatePopUpProps> = ({
   };
 
   return (
-    <div className="fixed top-0 right-0 flex items-center justify-center left-0 lg:left-[300px] z-10 bottom-0 bg-black/80">
-      <Button
-        onClick={onClose}
-        className="absolute top-6 right-6 bg-transparent"
-        size="icon"
-        variant="secondary"
-      >
-        <X className="w-6 h-6" />
-      </Button>
+    <div className="fixed top-0 h-full right-0 flex items-center justify-center left-0 md:left-[300px] z-30 bottom-0 bg-black/80">
       <Card className="max-h-max">
-        <CardContent className="p-6">
+        <CardContent className="p-6 relative">
           <CategoryForm handleAddCategory={handleAddCategory} />
+          <Button
+            onClick={onClose}
+            className="absolute top-2 right-2 bg-transparent"
+            size="icon"
+            variant="secondary"
+          >
+            <X className="w-4 h-4" />
+          </Button>
         </CardContent>
       </Card>
     </div>

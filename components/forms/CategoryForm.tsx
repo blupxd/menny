@@ -30,7 +30,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ handleAddCategory }) => {
 
   return (
     <Form {...form}>
-      <form className="w-96" onSubmit={form.handleSubmit(onSubmit)}>
+      <form className="w-72 md:w-96" onSubmit={form.handleSubmit(onSubmit)}>
         <div className="flex items-end space-x-4">
           <CustomFormField
             fieldType={FormFieldType.INPUT}

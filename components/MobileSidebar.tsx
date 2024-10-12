@@ -35,18 +35,19 @@ const MobileSidebar = ({ session }: SessionProviderProps) => {
 
   return (
     <nav
-      className={`flex flex-col lg:hidden items-end right-0 h-full left-0 transition-all duration-300 ease-in-out fixed top-0 ${
-        menu && "bg-black/50 z-50"
+      className={`flex flex-col md:hidden items-end w-full z-[11] ease-in-out fixed top-0 ${
+        menu && "bg-black/50 h-full z-20 transition-all duration-300 "
       }`}
     >
       <Button
         onClick={() => setMenu(!menu)}
         variant="ghost"
-        className="m-6 text-right z-20"
+        className="z-20 m-6"
         size="icon"
       >
         {menu ? <X /> : <AlignRight />}
       </Button>
+
       {menu && (
         <AnimatePresence>
           <motion.div
@@ -54,9 +55,9 @@ const MobileSidebar = ({ session }: SessionProviderProps) => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="px-6 pb-4 pt-16 border-l fixed top-0 flex flex-col bg-black min-h-screen min-w-[300px] w-[300px] z-10"
+            className="px-6 pb-4 pt-16 border-l fixed top-0 flex flex-col bg-black min-h-screen min-w-[300px] w-[300px]"
           >
-            <span className="bg-gradient-to-tr from-purple-950/10 to-cyan-600/10 absolute left-0 right-0 top-0 bottom-0 z-10" />
+            <span className="bg-gradient-to-tr from-purple-950/10 to-cyan-600/10 absolute left-0 right-0 top-0 bottom-0" />
             <div className="flex items-center space-x-4 my-4 z-50">
               <div className="rounded-full relative bg-purple-700 overflow-hidden h-8 w-8 flex items-center justify-center">
                 {session?.user.image ? (

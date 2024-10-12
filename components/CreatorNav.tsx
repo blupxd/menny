@@ -27,7 +27,7 @@ const CreatorNav = ({ name, id }: Props) => {
   const { setName, menuName } = useSetName();
   useEffect(() => setName(name!), [name]);
   return (
-    <div className="flex p-6 flex-col sticky top-0 bg-black z-10 border-b ">
+    <div className="flex p-6 flex-col sticky top-0 bg-black z-10 lg:pt-6 pt-14 border-b ">
       <span className="bg-gradient-to-tr from-cyan-900/10 -z-10 to-cyan-800/10 absolute left-0 right-0 top-0 bottom-0" />
       <div className="flex items-center space-x-4 md:mb-2 my-auto">
         

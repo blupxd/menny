@@ -181,7 +181,7 @@ const MenuCreator = ({ categoriesProps }: any) => {
     }
   };
 
-  const handleEditItem = (newItem: Item) => {
+  const handleEditItem = (newItem: any) => {
     if (actionState.toggleEditItem !== null) {
       setCategories((prevCategories) =>
         prevCategories.map(
@@ -218,7 +218,7 @@ const MenuCreator = ({ categoriesProps }: any) => {
   };
   console.log(actionState);
   return (
-    <div className="grid gap-4 grid-cols-2 p-6">
+    <div className="grid gap-4 grid-cols-2 p-6 z-10">
       <div className="flex justify-end col-span-2 items-center space-x-4">
         <Button disabled={!canUndo} onClick={() => undo()}>
           <Undo2 className="h-4 w-4" />
@@ -285,7 +285,7 @@ const MenuCreator = ({ categoriesProps }: any) => {
                   items={category.items.map((_, idx: number) => `${index}-${idx}`)}
                 >
                   {category.items.length > 0 &&
-                    category.items.map((item: Item, idx: number) =>
+                    category.items.map((item: any, idx: number) =>
                       actionState.toggleEditItem.categoryIndex === index &&
                       actionState.toggleEditItem.itemIndex === idx ? (
                         <div className="flex flex-col" key={idx}>

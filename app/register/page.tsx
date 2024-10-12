@@ -6,7 +6,7 @@ import React from "react";
 const RegisterPage = () => {
   return (
     <div className="min-h-screen flex md:flex-row flex-col">
-      <div className="bg-transparent min-h-screen flex py-10 flex-col px-24 justify-center w-full md:w-1/2 bg-gradient-to-tr shadow-lg shadow-black/50 z-10 from-purple-800/20 to-cyan-800/20">
+      <div className="bg-transparent min-h-screen flex py-10 flex-col px-4 md:px-24 justify-center w-full md:w-1/2 bg-gradient-to-tr shadow-lg shadow-black/50 z-10 from-purple-800/20 to-cyan-800/20">
         <Link href="/" className="mb-4 font-bold text-2xl">
           Menny
         </Link>
