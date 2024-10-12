@@ -1,5 +1,5 @@
 "use client";
-import React, { act, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "./ui/card";
 import { Button } from "./ui/button";
-import { Edit, Grip, Loader2, Plus, Save, Trash, Undo2, X } from "lucide-react";
+import { Edit, Loader2, Plus, Save, Trash, Undo2, X } from "lucide-react";
 import NewItemForm from "./forms/NewItemForm";
 import NameForm from "./forms/NameForm";
 import { useGenerationStore } from "@/lib/themeSelect";
@@ -351,7 +351,7 @@ const MenuCreator = ({ categoriesProps }: any) => {
                     background: theme?.secondary,
                     color: theme?.text,
                   }}
-                  className="w-full p-4 flex max-h-max flex-col items-center rounded-lg bg-black/50 border"
+                  className="w-full p-4 flex h-full justify-center lg:max-h-max flex-col items-center rounded-lg bg-black/50 border"
                 >
                   <h1 className="text-xs mb-4">Add new item?</h1>
                   <Button
@@ -362,7 +362,7 @@ const MenuCreator = ({ categoriesProps }: any) => {
                       }))
                     }
                     variant="ghost"
-                    className="px-6 hover:text-orange-500 h-12 py-2 border hover:bg-transparent hover:border-orange-500"
+                    className="px-6 hover:text-purple-500 h-12 py-2 border hover:bg-transparent hover:border-purple-500"
                   >
                     <Plus className="w-4 h-4 " />
                   </Button>

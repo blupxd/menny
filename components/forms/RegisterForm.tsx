@@ -1,15 +1,15 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, } from "react-hook-form";
 import { z } from "zod";
 import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import CustomFormField, { FormFieldType } from "../CustomFormField";
 import { Lock, Mail } from "lucide-react";
 import { Checkbox } from "../ui/checkbox";
 import Link from "next/link";
-import SubmitButton from "../SubmitButton";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
+import GradientButton from "../GradientButton";
 
 const formSchema = z
   .object({
@@ -151,9 +151,9 @@ const RegisterForm = () => {
             )}
           />
         </div>
-        <SubmitButton className="mt-6 w-full" isLoading={false}>
+        <GradientButton className="mt-6 w-full" isLoading={false}>
           Register
-        </SubmitButton>
+        </GradientButton>
       </form>
     </Form>
   );

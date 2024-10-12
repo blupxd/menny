@@ -5,12 +5,12 @@ import { z } from "zod";
 import { Form } from "@/components/ui/form";
 import { signIn } from "next-auth/react";
 import CustomFormField, { FormFieldType } from "../CustomFormField";
-import { Lock, Router, User } from "lucide-react";
+import { Lock, User } from "lucide-react";
 import { Checkbox } from "../ui/checkbox";
 import Link from "next/link";
-import SubmitButton from "../SubmitButton";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
+import GradientButton from "../GradientButton";
 
 const formSchema = z.object({
   email: z
@@ -83,18 +83,18 @@ const LoginForm = () => {
         </section>
         <section className="flex text-xs justify-between mt-6">
           <div className="flex space-x-2 items-center">
-            <Checkbox id="remember" />
+            <Checkbox id="remember" className="rounded-lg"/>
             <label htmlFor="remember" className=" font-medium">
               Remember me
             </label>
           </div>
-          <Link className="text-orange-500" href="/">
+          <Link className="text-purple-300" href="/">
             Forgot your password?
           </Link>
         </section>
-        <SubmitButton className="mt-6 w-full" isLoading={false}>
+        <GradientButton className="mt-6 w-full" isLoading={false}>
           Log in
-        </SubmitButton>
+        </GradientButton>
       </form>
     </Form>
   );

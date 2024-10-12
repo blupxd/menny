@@ -98,9 +98,9 @@ const CustomFormField = (props: CustomProps) => {
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className="flex-1">
+        <FormItem className="flex-1 text-purple-300">
           {props.fieldType !== FormFieldType.CHECKBOX && label && (
-            <FormLabel>{label}</FormLabel>
+            <FormLabel className="font-light">{label}</FormLabel>
           )}
           <RenderInput field={field} props={props} />
           <FormMessage />

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
 import { X } from "lucide-react";
@@ -25,7 +25,7 @@ const CategoryCreatePopUp: React.FC<CategoryCreatePopUpProps> = ({
   };
 
   return (
-    <div className="fixed top-0 right-0 flex items-center justify-center left-[300px] z-10 bottom-0 bg-black/80">
+    <div className="fixed top-0 right-0 flex items-center justify-center left-0 lg:left-[300px] z-10 bottom-0 bg-black/80">
       <Button
         onClick={onClose}
         className="absolute top-6 right-6 bg-transparent"

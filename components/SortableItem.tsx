@@ -45,7 +45,7 @@ const SortableItem = ({
         background: theme?.secondary,
         color: theme?.text,
       }}
-      className="w-full max-h-max flex items-start space-x-4 p-4 rounded-lg border bg-black/50"
+      className="w-full relative max-h-max flex lg:flex-row flex-col items-start lg:space-x-4 p-4 rounded-lg border bg-black/50"
     >
       {item.image ? (
         <div className="w-20 h-20 rounded-lg relative overflow-hidden">
@@ -64,31 +64,34 @@ const SortableItem = ({
             color: theme?.primary,
           }}
           variant="outline"
-          className={`${
+          className={`relative ${
             theme && "hover:opacity-60"
-          } w-20 h-20 transition-all duration-100 ease-in-out flex items-center justify-center`}
+          } w-full lg:w-20 h-20 transition-all duration-100 ease-in-out flex items-center justify-center`}
         >
           <ImagePlus className="w-10 h-10" />
         </Button>
       )}
-      <div className="flex flex-col justify-between -mt-1 flex-grow h-20">
-        <div className="flex items-center justify-between">
+      <div className="flex flex-col w-full mt-4 lg:-mt-1 flex-grow lg:h-20">
+        {/* Name and Price */}
+        <div className="flex flex-col w-full">
           <h2 className="text-sm font-semibold">{item.itemName}</h2>
           <p
-            className="text-base font-bold"
-            style={{
-              color: theme?.primary,
-            }}
+            className="text-sm italic lg:text-left"
+            style={{ color: theme?.primary }}
           >
-            {item.price}
+            Price: {item.price}
           </p>
         </div>
+
+        {/* Description */}
         {item.itemDescription && (
-          <p className="text-xs w-48 text-wrap text-ellipsis overflow-hidden flex-grow">
+          <p className="text-xs mb-4 lg:mt-1 text-clip text-wrap">
             {item.itemDescription}
           </p>
         )}
-        <div className="flex items-start space-x-4">
+
+        {/* Action Buttons */}
+        <div className="flex lg:absolute lg:right-4 lg:bottom-4 items-start space-x-2 lg:mt-2 lg:justify-end">
           <Button
             style={{
               color: theme?.secondary,
@@ -117,7 +120,7 @@ const SortableItem = ({
               <Button
                 onClick={() => handleSetDeleteItem(null, null)}
                 variant="outline"
-                className=" text-xs"
+                className="text-xs"
               >
                 Cancel <X className="h-4 w-4 ml-2" />
               </Button>
@@ -134,6 +137,7 @@ const SortableItem = ({
           )}
         </div>
       </div>
+
       <Button
         style={{
           cursor: active ? "grabbing" : "grab",
@@ -143,7 +147,7 @@ const SortableItem = ({
         {...listeners}
         {...attributes}
         variant="ghost"
-        className="hover:bg-transparent h-4 w-4"
+        className="hover:bg-transparent absolute md:top-4 top-2 right-2 md:right-4 h-4 w-4"
       >
         <Grip className="w-4 h-4" />
       </Button>

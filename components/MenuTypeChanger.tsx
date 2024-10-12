@@ -28,7 +28,7 @@ const MenuTypeChanger = () => {
   }, [menuType]);
 
   return (
-    <div className="max-w-56 min-w-56 flex flex-col">
+    <div className="w-full lg:max-w-56 lg:min-w-56 flex flex-col">
       <h1 className="text-sm mb-2 font-extralight">Types</h1>
       <DropdownMenu open={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>
         <DropdownMenuTrigger asChild>

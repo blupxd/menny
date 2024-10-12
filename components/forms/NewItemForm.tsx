@@ -49,7 +49,7 @@ const NewItemForm = ({ handleAddItem }: any) => {
           background: theme?.background,
           color: theme?.text,
         }}
-        className="w-full flex items-start space-x-4 p-4 rounded-lg border bg-black/50"
+        className="w-full flex md:flex-row flex-col items-start lg:space-x-4 p-4 rounded-lg border bg-black/50"
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <FileUploader
@@ -60,8 +60,8 @@ const NewItemForm = ({ handleAddItem }: any) => {
             form.setValue("image", image); // Set the image in the form state
           }}
         />
-        <div className="flex flex-col h-full justify-between space-y-3 w-full">
-          <div className="flex space-x-4">
+        <div className="flex flex-col h-full lg:mt-0 mt-4 justify-between space-y-4 w-full">
+          <div className="flex lg:flex-row flex-col lg:space-x-4 lg:space-y-0 space-y-4">
             <CustomFormField
               fieldType={FormFieldType.ITEMNAME}
               control={form.control}
@@ -76,7 +76,7 @@ const NewItemForm = ({ handleAddItem }: any) => {
               icon={Coins}
             />
           </div>
-          <div className="flex space-x-4">
+          <div className="flex lg:flex-row flex-col space-y-4 lg:space-y-0 lg:space-x-4">
             <CustomFormField
               fieldType={FormFieldType.TEXTAREA}
               control={form.control}

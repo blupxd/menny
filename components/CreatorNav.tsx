@@ -2,20 +2,30 @@
 import React, { useEffect, useState } from "react";
 import MenuTypeChanger from "./MenuTypeChanger";
 import { Button, buttonVariants } from "./ui/button";
-import { Edit, ExternalLink, X } from "lucide-react";
+import {
+  ChevronDown,
+  Edit,
+  ExternalLink,
+  X,
+} from "lucide-react";
 import ThemePicker from "./ThemePicker";
 import MenuColsChanger from "./MenuColsChanger";
 import { useSetName } from "@/lib/nameChanger";
 import NameForm from "./forms/NameForm";
-import Link from "next/link";
+import GradientLink from "./GradientLink";
+import { AnimatePresence, motion } from "framer-motion";
+import GradientButton from "./GradientButton";
 
 const CreatorNav = ({ name, id }: any) => {
   const [editName, setEditName] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
   const { setName, menuName } = useSetName();
   useEffect(() => setName(name), [name]);
   return (
-    <div className="flex p-6 flex-col sticky top-0 z-10 border-b bg-stone-950">
-      <div className="flex items-center space-x-4 mb-2 my-auto">
+    <div className="flex p-6 flex-col sticky top-0 bg-black z-10 border-b ">
+      <span className="bg-gradient-to-tr from-cyan-900/10 -z-10 to-cyan-800/10 absolute left-0 right-0 top-0 bottom-0" />
+      <div className="flex items-center space-x-4 md:mb-2 my-auto">
+        
         {editName ? (
           <div className="flex items-center w-96 space-x-2">
             <NameForm
@@ -37,24 +47,51 @@ const CreatorNav = ({ name, id }: any) => {
               variant="ghost"
               size="icon"
             >
-              <Edit className="w-4 text-orange-500 h-4" />
+              <Edit className="w-4 text-purple-500 h-4" />
             </Button>
           </>
         )}
-        <Link
+        <GradientLink
           href={`/m/${id}`}
           className={`${buttonVariants({
             variant: "outline",
           })}`}
         >
-          View in link <ExternalLink className="w-4 h-4 ml-2"/>
-        </Link>
+          View
+          <ExternalLink className="w-4 h-4 ml-2" />
+        </GradientLink>
+        <GradientButton
+          onClick={() => (open ? setOpen(false) : setOpen(true))}
+          className="lg:hidden max-w-max"
+        >
+          Tools
+          <ChevronDown
+            className={`${
+              open ? "rotate-180" : "rotate-0"
+            } duration-200 transition-all  ease-in-out w-4 ml-2 h-4`}
+          />
+        </GradientButton>
       </div>
-      <div className="flex items-start space-x-24">
+      <div className="hidden lg:grid grid-cols-2 lg:border-0 border-t pt-4 lg:mt-0 mt-4 lg:pt-0 lg:grid-cols-3 items-start gap-6 ">
         <MenuTypeChanger />
         <MenuColsChanger />
         <ThemePicker />
       </div>
+      {open && (
+        <AnimatePresence>
+          <motion.div
+            initial={{ opacity: 0, y: "-20%" }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: "-100%" }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            className="grid lg:hidden grid-cols-2 lg:border-0 border-t pt-4 lg:mt-0 mt-4 lg:pt-0 lg:grid-cols-3 items-start gap-6 "
+          >
+            <MenuTypeChanger />
+            <MenuColsChanger />
+            <ThemePicker />
+          </motion.div>
+        </AnimatePresence>
+      )}
     </div>
   );
 };

@@ -1,30 +1,42 @@
-import RegisterForm from '@/components/forms/RegisterForm'
-import Link from 'next/link'
-import React from 'react'
+import RegisterForm from "@/components/forms/RegisterForm";
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
 
 const RegisterPage = () => {
   return (
-    <div className="min-h-screen flex m-10 items-center justify-center">
-      <div className="border p-10 max-h-max mx-auto flex flex-col">
-        <h1 className="text-3xl font-bold ">
-          Register
+    <div className="min-h-screen flex md:flex-row flex-col">
+      <div className="bg-transparent min-h-screen flex py-10 flex-col px-24 justify-center w-full md:w-1/2 bg-gradient-to-tr shadow-lg shadow-black/50 z-10 from-purple-800/20 to-cyan-800/20">
+        <Link href="/" className="mb-4 font-bold text-2xl">
+          Menny
+        </Link>
+        <h1 className="text-3xl bg-gradient-to-b from-gray-300 to-purple-300 bg-clip-text text-transparent">
+          Create account
         </h1>
         <h2 className="font-thin text-sm mb-4">
-          Create your account to access our features
+          Sign up today and create your menu today. With our tools create your
+          menu in no time
         </h2>
         <RegisterForm />
         <div className="flex justify-center text-xs mt-4 items-center gap-2 font-light">
           <p>You already have an account?</p>
           <Link
             href="/login"
-            className="text-orange-500 underline font-semibold"
+            className="text-purple-300 underline font-semibold"
           >
             Log in
           </Link>
         </div>
       </div>
+      <Image
+        src="/assets/loginbg.svg"
+        width={1440}
+        height={1080}
+        alt="background"
+        className="w-1/2"
+      />
     </div>
-  )
-}
+  );
+};
 
-export default RegisterPage
+export default RegisterPage;

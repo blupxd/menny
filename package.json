@@ -29,6 +29,7 @@
     "class-variance-authority": "^0.7.0",
     "cloudinary": "^2.5.0",
     "clsx": "^2.1.1",
+    "framer-motion": "^11.11.8",
     "lemonsqueezy.ts": "^0.1.7",
     "lodash": "^4.17.21",
     "lucide-react": "^0.445.0",

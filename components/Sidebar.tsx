@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import { Button, buttonVariants } from "./ui/button";
-import { EllipsisVertical, Plus, Stars } from "lucide-react";
+import { EllipsisVertical, Plus } from "lucide-react";
 import { Separator } from "./ui/separator";
 import Link from "next/link";
 import {
@@ -32,10 +32,10 @@ const Sidebar = async () => {
   };
   
   return (
-    <div className="px-6 py-4 border-r flex flex-col bg-stone-950 min-h-screen min-w-[300px] w-[300px] fixed">
+    <div className="px-6 py-4 border-r md:flex hidden flex-col bg-gradient-to-tr from-purple-950/10 to-cyan-600/10 min-h-screen min-w-[300px] w-[300px] fixed">
       <div className="flex items-center space-x-4 my-4">
         {/* Avatar Section */}
-        <div className="rounded-full relative bg-orange-500 overflow-hidden h-8 w-8 flex items-center justify-center">
+        <div className="rounded-full relative bg-purple-700 overflow-hidden h-8 w-8 flex items-center justify-center">
           {session?.user.image ? (
             <Image
               fill
@@ -103,7 +103,7 @@ const Sidebar = async () => {
                   justifyContent: "start",
                 }}
                 href={menu.link}
-                className={`flex justify-start items-center hover:bg-orange-500 ${buttonVariants(
+                className={`flex justify-start items-center hover:bg-purple-500 ${buttonVariants(
                   {
                     variant: "ghost",
                   }

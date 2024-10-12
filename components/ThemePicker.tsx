@@ -15,7 +15,7 @@ const ThemePicker = () => {
   useEffect(() => setSelectedTheme(theme.name), [theme]);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col w-full">
       <h1 className="text-sm max-h-max font-extralight">Themes</h1>
       <div className="flex space-x-4 max-h-max mt-4">
         {themes.map((theme, index) => (

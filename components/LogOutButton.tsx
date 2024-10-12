@@ -13,7 +13,7 @@ const LogOutButton = () => {
   };
   return (
     <Button
-      className="hover:bg-neutral-900 text-orange-500 font-normal"
+      className="hover:bg-neutral-900 text-purple-500 font-normal"
       onClick={handleLogout}
       variant={"ghost"}
     >

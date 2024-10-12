@@ -14,10 +14,10 @@ import { ChevronDown, Columns } from "lucide-react";
 import { useStoreCols } from "@/lib/columnSelect";
 const MenuColsChanger = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const columnOptions = [1, 2, 3];
+  const columnOptions = [1, 2];
   const { columns, setCols } = useStoreCols();
   return (
-    <div className="max-w-48 min-w-48 flex flex-col">
+    <div className="max-w-full md:max-w-48 flex flex-col">
       <h1 className="text-sm mb-2 font-extralight">Columns</h1>
       <DropdownMenu open={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>
         <DropdownMenuTrigger asChild>
