@@ -6,8 +6,6 @@ import { z } from "zod";
 import { Form } from "../ui/form";
 import CustomFormField, { FormFieldType } from "../CustomFormField";
 import { Button } from "../ui/button";
-import { useGenerationStore } from "@/lib/themeSelect";
-
 // Define the schema for the form
 const formSchema = z.object({
   categoryName: z.string().min(3, { message: "This field has to be filled." }),
