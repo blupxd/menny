@@ -67,13 +67,18 @@ export const authOptions: NextAuthOptions = {
         };
       }
       if (trigger === "update" && session) {
-        token = { ...token, user: session };
-        return token;
+        console.log(session)
+        token.name = session.name;
+        token.lastname = session.lastname;
+        token.email = session.email;
       }
+
       return token;
     },
     async session({ session, token }) {
+      
       return {
+        
         ...session,
         user: {
           ...session.user,

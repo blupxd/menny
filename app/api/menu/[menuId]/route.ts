@@ -21,16 +21,69 @@ interface Params {
   menuId: string;
 }
 
+
 export async function GET(req: NextRequest, { params }: { params: Params }) {
   try {
     const { menuId } = params;
+    const editMode = req.nextUrl.searchParams.get('editMode') === 'true';
 
+    // Get the current user session
+    const session = await getServerSession(authOptions);
+
+    // If it's in edit mode, ensure the user is authenticated
+    if (editMode) {
+      if (!session) {
+        return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+      }
+
+      // Find the menu and ensure it belongs to the user
+      const menu = await db.menu.findFirst({
+        where: {
+          id: menuId,
+          userId: session.user.id, // Check that the menu belongs to the user
+        },
+        orderBy: {
+          createdAt: "asc",
+        },
+        include: {
+          categories: {
+            include: {
+              items: true,
+            },
+            orderBy: {
+              createdAt: "desc",
+            },
+          },
+        },
+      });
+
+      if (!menu) {
+        return NextResponse.json(
+          { message: "This menu doesn't exist or you don't have access to it!" },
+          { status: 403 }
+        );
+      }
+
+      // Return the menu data if the user is authorized to access it in edit mode
+      return NextResponse.json(
+        {
+          id: menu.id,
+          menuName: menu.menuName,
+          categories: menu.categories,
+          menuType: menu.menuType,
+          theme: menu.theme,
+        },
+        { status: 200 }
+      );
+    }
+
+    // If not in edit mode, allow general access without ownership check
     const menu = await db.menu.findFirst({
       where: {
         id: menuId,
       },
       orderBy: {
-        createdAt: 'asc',
+        createdAt: "asc",
       },
       include: {
         categories: {
@@ -38,7 +91,7 @@ export async function GET(req: NextRequest, { params }: { params: Params }) {
             items: true,
           },
           orderBy: {
-            createdAt: 'desc',
+            createdAt: "desc",
           },
         },
       },
@@ -46,13 +99,12 @@ export async function GET(req: NextRequest, { params }: { params: Params }) {
 
     if (!menu) {
       return NextResponse.json(
-        {
-          message: "This menu doesn't exist!",
-        },
-        { status: 403 }
+        { message: "This menu doesn't exist!" },
+        { status: 404 }
       );
     }
 
+    // Return the menu data for general viewing
     return NextResponse.json(
       {
         id: menu.id,
@@ -63,12 +115,15 @@ export async function GET(req: NextRequest, { params }: { params: Params }) {
       },
       { status: 200 }
     );
+
   } catch (error: unknown) {
     const errorMessage =
       error instanceof Error ? error.message : "An error occurred!";
     return NextResponse.json({ message: errorMessage }, { status: 500 });
   }
 }
+
+
 
 export async function PATCH(req: NextRequest, { params }: { params: Params }) {
   try {
@@ -124,7 +179,8 @@ export async function PATCH(req: NextRequest, { params }: { params: Params }) {
           in: existingCategoryIds.filter(
             (id) =>
               !incomingCategoryNames.includes(
-                userHasMenu.categories.find((cat) => cat.id === id)?.categoryName
+                userHasMenu.categories.find((cat) => cat.id === id)
+                  ?.categoryName
               )
           ),
         },

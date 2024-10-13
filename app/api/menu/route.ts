@@ -24,23 +24,46 @@ export async function GET() {
   }
 }
 export async function DELETE(req: Request) {
-  const session = await getServerSession(authOptions);
   try {
+    const { menuId } = await req.json();
+    const session = await getServerSession(authOptions);
+
     if (!session) {
-      return NextResponse.json({ message: "Unauthorized", status: 400 });
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
-    const body = await req.json();
-    const { id } = body;
-    const userId = session.user?.id;
-    await db.menu.delete({
+
+    // Check if the user owns the menu
+    const userHasMenu = await db.menu.findFirst({
       where: {
-        userId: userId,
-        id,
+        id: menuId,
+        userId: session.user.id,
+      },
+      include: {
+        categories: {
+          include: {
+            items: true,
+          },
+        },
       },
     });
+
+    if (!userHasMenu) {
+      return NextResponse.json(
+        { message: "User doesn't have this menu in their account!" },
+        { status: 403 }
+      );
+    }
+
+    // Delete the menu
+    await db.menu.delete({
+      where: {
+        id: menuId,
+      },
+    });
+
     return NextResponse.json(
-      { message: "Successfully deleted" },
-      { status: 201 }
+      { message: "Menu has been successfully deleted!" },
+      { status: 200 }
     );
   } catch (error: unknown) {
     const errorMessage =
@@ -48,6 +71,7 @@ export async function DELETE(req: Request) {
     return NextResponse.json({ message: errorMessage }, { status: 500 });
   }
 }
+
 
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions);

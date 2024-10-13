@@ -30,6 +30,7 @@ import SortableItem from "./SortableItem";
 import { updateMenu } from "@/lib/handlers";
 import { useSetType } from "@/lib/typeSelect";
 import { useSetName } from "@/lib/nameChanger";
+import MenuDelete from "./MenuDelete";
 interface Item {
   itemName: string;
   price: string;
@@ -42,6 +43,7 @@ interface Category {
 }
 
 const MenuCreator = ({ categoriesProps }: any) => {
+  const [deleteMenu, setDeleteMenu] = useState<boolean>(false)
   const params = useParams();
   const {
     categories,
@@ -439,6 +441,7 @@ const MenuCreator = ({ categoriesProps }: any) => {
       )}
 
       <div className="flex space-x-4 fixed right-8 bottom-8">
+        <MenuDelete onClose={() => setDeleteMenu(false)} id={params.menuId+""} show={deleteMenu} />
         <Button
           disabled={save}
           onClick={saveChanges}
@@ -448,7 +451,7 @@ const MenuCreator = ({ categoriesProps }: any) => {
           {loading && <Loader2 className="w-4 h-4 animate-spin mr-2" />}
           Save <Save className="h-4 w-4 ml-2" />
         </Button>
-        <Button variant="destructive" className="bg-red-600" size="icon">
+        <Button onClick={() => setDeleteMenu(true)} variant="destructive" className="bg-red-600" size="icon">
           <Trash className="h-4 w-4" />
         </Button>
       </div>

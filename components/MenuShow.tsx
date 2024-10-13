@@ -34,7 +34,7 @@ const MenuShow = () => {
   const { setType } = useSetType();
   const getMenuData = async () => {
     try {
-      const response = await fetch(`/api/menu/${params.menuId}`, {
+      const response = await fetch(`/api/menu/${params.menuId}?editMode=true`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

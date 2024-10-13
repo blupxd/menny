@@ -1,5 +1,46 @@
 import { Category } from "next-auth";
 
+export const deleteMenu = async (menuId: string) => {
+  try {
+    const response = await fetch("/api/menu", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        menuId: menuId,
+      }),
+    });
+    if (!response.ok) return false;
+    return true;
+  } catch (error: unknown) {
+    console.error(error);
+  }
+};
+export const updateUser = async (
+  name: string,
+  lastname: string,
+  email: string,
+  image: string
+) => {
+  try {
+    console.log(email,name)
+    const response = await fetch(`/api/auth/user`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name,
+        lastname,
+        email,
+        image,
+      }),
+    });
+
+    if (!response.ok) return false;
+    return true;
+  } catch (error: unknown) {
+    console.error(error);
+  }
+};
+
 export const updateMenu = async (
   params: any,
   categories: any,
@@ -93,7 +134,7 @@ export const handleSubscription = async (
     // Now you can use checkoutURL
     setTimeout(() => {
       window.open(checkoutURL, "_blank");
-    })
+    });
   } catch (error) {
     console.error(error);
   }
