@@ -39,7 +39,7 @@ const MenuDelete: React.FC<MenuDeleteProps> = ({
                 deleteMenu(id);
                 if (reload) reload();
                 else location.replace("/dashboard");
-                onClose;
+                onClose();
               }}
               variant="secondary"
             >
