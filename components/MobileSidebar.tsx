@@ -65,7 +65,7 @@ const MobileSidebar = ({ session, plan }: any) => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: "-100%" }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="px-6 pb-4 pt-16 border-r flex flex-col bg-black min-h-screen"
+              className="px-6 pb-12 pt-12 border-r flex flex-col bg-black min-h-screen"
             >
               <span className="bg-gradient-to-tr from-purple-950/10 to-cyan-600/10 absolute left-0 right-0 top-0 bottom-0" />
               <div className="flex items-center space-x-4 my-4 z-10">

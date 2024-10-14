@@ -17,6 +17,18 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      async profile(profile) {
+        // Split the full name into first name and last name
+        const [firstName, ...lastName] = profile.name?.split(" ") || [];
+        return {
+          id: profile.sub,
+          email: profile.email,
+          name: firstName || profile.name,
+          lastname: lastName.join(" ") || "",
+          image: profile.picture,
+          provider: "google"
+        };
+      },
     }),
     CredentialsProvider({
       name: "Credentials",
@@ -50,7 +62,8 @@ export const authOptions: NextAuthOptions = {
           id: existingUser.id + "",
           email: existingUser.email + "",
           name: existingUser.name + "",
-          lastname: existingUser.lastname + ""
+          lastname: existingUser.lastname + "",
+          provider: "credentials"
         };
       },
     }),
@@ -64,21 +77,21 @@ export const authOptions: NextAuthOptions = {
           email: user.email,
           name: user.name,
           lastname: user.lastname,
+          provider: user.provider
         };
       }
       if (trigger === "update" && session) {
-        console.log(session)
+        console.log(session);
         token.name = session.name;
         token.lastname = session.lastname;
         token.email = session.email;
+        token.picture = session.image;
       }
 
       return token;
     },
     async session({ session, token }) {
-      
       return {
-        
         ...session,
         user: {
           ...session.user,
@@ -86,6 +99,7 @@ export const authOptions: NextAuthOptions = {
           name: token.name,
           lastname: token.lastname,
           email: token.email,
+          provider: token.provider
         },
       };
     },

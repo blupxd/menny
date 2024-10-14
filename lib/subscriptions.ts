@@ -46,7 +46,7 @@ export async function getUserSubscriptionPlan(userId: string) {
   // Vraćanje rezultata o korisniku i pretplati
   return {
     ...user,
-    currentPeriodEnd: user.planExpires?.getTime(),
+    currentPeriodEnd: user.planExpires,
     isCanceled,
     isPro,
     updatePaymentMethodURL: subscription?.attributes.urls.update_payment_method,

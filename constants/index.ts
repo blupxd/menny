@@ -2,6 +2,7 @@ import {
   Beer,
   Coffee,
   FilePlus,
+  Home,
   Pizza,
   QrCode,
   Settings,
@@ -85,6 +86,11 @@ export const menuTypes = [
 ];
 export const menuItems = [
   {
+    label: "Home",
+    link: "/",
+    icon: Home,
+  },
+  {
     label: "View Profile",
     link: "/dashboard/profile",
     icon: User,
@@ -93,12 +99,7 @@ export const menuItems = [
     label: "Plans & Pricing",
     link: "/pricing",
     icon: ShoppingBag,
-  },
-  {
-    label: "Settings",
-    link: "/settings",
-    icon: Settings,
-  },
+  }
 ];
 export const accordionMenu = [
   {

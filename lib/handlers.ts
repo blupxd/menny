@@ -19,10 +19,16 @@ export const updateUser = async (
   name: string,
   lastname: string,
   email: string,
-  image: string
-) => {
+  image: File | string
+): Promise<{ success: boolean; imageUrl?: string }>  => {
   try {
-    console.log(email,name)
+    let imageUrl = typeof image === "string" ? image : "";
+
+    // If the image is a file, upload it and get the new URL
+    if (image && image instanceof File) {
+      imageUrl = (await uploadImage(image)) || imageUrl;
+    }
+
     const response = await fetch(`/api/auth/user`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -30,14 +36,15 @@ export const updateUser = async (
         name,
         lastname,
         email,
-        image,
+        image: imageUrl,
       }),
     });
+    if (!response.ok) return { success: false };
 
-    if (!response.ok) return false;
-    return true;
+    return { success: true, imageUrl };
   } catch (error: unknown) {
     console.error(error);
+    return { success: false }; // Ensure that a boolean is always returned in case of an error
   }
 };
 

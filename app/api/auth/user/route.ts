@@ -46,6 +46,7 @@ export async function POST(req: Request) {
         name,
         lastname,
         terms,
+        provider: 'credentials'
       },
     });
 

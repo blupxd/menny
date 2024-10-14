@@ -24,6 +24,7 @@ declare module "next-auth" {
     email: string;
     name: string;
     lastname: string;
+    provider: string
   }
 
   interface Session {
@@ -32,12 +33,14 @@ declare module "next-auth" {
       email: string;
       name: string;
       lastname: string;
+      provider: string
     } & DefaultSession["user"];
     token: {
       id: string;
       email: string;
       name: string;
       lastname: string;
+      provider: string
     };
   }
 }

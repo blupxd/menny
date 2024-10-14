@@ -3,6 +3,7 @@ import React from "react";
 import { Button } from "./ui/button";
 import { LogOutIcon } from "lucide-react";
 import { signOut } from "next-auth/react";
+import GradientButton from "./GradientButton";
 
 const LogOutButton = () => {
   const handleLogout = () => {
@@ -12,13 +13,9 @@ const LogOutButton = () => {
     });
   };
   return (
-    <Button
-      className="hover:bg-neutral-900 text-purple-500 font-normal"
-      onClick={handleLogout}
-      variant={"ghost"}
-    >
+    <GradientButton onClick={handleLogout} className="flex items-center w-full">
       <LogOutIcon className="mr-2 h-4 w-4 " /> Sign Out
-    </Button>
+    </GradientButton>
   );
 };
 

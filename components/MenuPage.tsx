@@ -33,7 +33,7 @@ const MenuPage = ({plan}:any) => {
     setShowPopup((prev) => !prev); // Toggle popup visibility
   };
   return (
-    <div className="p-12 bg-gradient-to-tr from-cyan-900/10 to-purple-600/10 min-h-screen flex space-y-12 flex-col">
+    <div className="px-4 pt-24 pb-4 md:p-12 bg-gradient-to-tr from-cyan-900/10 to-purple-600/10 min-h-screen flex space-y-12 flex-col">
       <MenuCreatePopUp show={showPopup} onClose={togglePopup} />
       <div className="flex flex-col">
         <h1 className="text-3xl font-semibold bg-gradient-to-b from-gray-300 to-purple-300 bg-clip-text text-transparent">

@@ -54,9 +54,10 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
           {props.icon && <props.icon className="mx-2" />}
           <FormControl>
             <Input
+            disabled={props.disabled}
               placeholder={props.placeholder}
               {...field}
-              className="border-0 p-2 h-6 text-xs"
+              className="border-0 p-2 md:h-6 md:text-sm lg:text-xs"
             />
           </FormControl>
         </div>
