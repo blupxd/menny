@@ -1,14 +1,12 @@
 import GradientLink from "@/components/GradientLink";
 import ManageSubscription from "@/components/ManageSubscription";
 import ProfilePage from "@/components/ProfilePage";
-import { buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { authOptions } from "@/lib/auth";
 import { getUserSubscriptionPlan } from "@/lib/subscriptions";
 import { Stars } from "lucide-react";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
-import Link from "next/link";
 import React from "react";
 
 const page = async () => {

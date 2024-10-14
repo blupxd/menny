@@ -66,7 +66,7 @@ const PersonalForm = ({
           </div>
           {disabled && (
             <p className="text-xs text-red-500">
-              You can't change your email because you are signed in with google
+              You can&apos;t change your email because you are signed in with google
             </p>
           )}
           <CustomFormField
