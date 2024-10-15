@@ -5,12 +5,10 @@ import {
   Home,
   Pizza,
   QrCode,
-  Settings,
   ShoppingBag,
   Soup,
   User,
   Utensils,
-  UtensilsCrossed,
   Vegan,
 } from "lucide-react";
 export const themes = [
@@ -103,19 +101,13 @@ export const menuItems = [
 ];
 export const accordionMenu = [
   {
-    label: "Create new menu",
-    link: "/menu-creation",
+    label: "Create a menu",
+    link: "/dashboard",
     icon: FilePlus,
   },
   {
-    label: "View my menus",
-    link: "/dashboard",
-    numberOfMenus: 4,
-    icon: UtensilsCrossed,
-  },
-  {
     label: "Menu QR codes",
-    link: "/menu-qr",
+    link: "/dashboard/menu-qr",
     icon: QrCode,
   },
 ];

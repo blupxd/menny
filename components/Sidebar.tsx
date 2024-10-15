@@ -10,7 +10,6 @@ import {
   AccordionTrigger,
 } from "@radix-ui/react-accordion";
 import { AccordionContent } from "./ui/accordion";
-import { Badge } from "./ui/badge";
 import { accordionMenu, menuItems } from "@/constants";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
@@ -116,11 +115,7 @@ const Sidebar = async () => {
               >
                 <menu.icon className="mr-4 h-4 w-4" />
                 {menu.label}
-                {menu.numberOfMenus && (
-                  <Badge variant="secondary" className="ml-auto">
-                    {menu.numberOfMenus}
-                  </Badge>
-                )}
+                
               </Link>
             </AccordionContent>
           ))}

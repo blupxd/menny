@@ -5,6 +5,7 @@ import { getProducts, handleSubscription } from "@/lib/handlers";
 import { CircleCheckBig, Stars } from "lucide-react";
 import { useRouter } from "next/navigation";
 import GradientButton from "./GradientButton";
+import { Skeleton } from "./ui/skeleton";
 
 const productBenefitsMap: Record<string, string[]> = {
   Premium: ["5 Menus", "Premium themes", "Item images", "Menu QR Code"],
@@ -43,65 +44,18 @@ const Pricing = ({ session }: any) => {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 w-full">
+    <div className="grid z-10 grid-cols-1 lg:grid-cols-3 gap-4 w-full">
       <h1 className="text-center md:col-span-3 text-5xl my-6 font-semibold bg-gradient-to-b from-gray-300 to-purple-300 bg-clip-text text-transparent">
         Plans and Prices
       </h1>
-      <Card className="text-card-foreground bg-gradient-to-tr from-purple-950/10 to-cyan-600/10 border-purple-800/20 border shadow-sm shadow-gray-800 bg-transparent flex flex-col min-h-[12rem] w-full p-10 rounded-lg backdrop-blur-xl">
-        <div>
-          <CardTitle className="text-base items-start font-light flex-col space-x-2">
-            Free Plan
-            <div className="flex items-end mt-2 font-semibold">
-              <p className="text-3xl">Free</p>
-            </div>
-          </CardTitle>
-          <div className="w-full py-2 space-x-2 flex items-center">
-            <hr className="border-zinc-800 w-full h-0.5" />
-            <p className="text-sm font-light text-zinc-500">Features</p>
-            <hr className="border-zinc-800 w-full h-0.5" />
-          </div>
-
-          <CardContent className="p-0 max-h-max">
-            {renderBenefits("Free")}
-          </CardContent>
-        </div>
-        <CardFooter className="pt-4 px-0 pb-0">
-          <GradientButton onClick={() => !session && router.push("/register")}>
-            Choose Free Plan
-          </GradientButton>
-        </CardFooter>
-      </Card>
-
       {products.length > 0 ? (
-        products.map((product) => (
-          <Card
-            className={`${
-              product.attributes.name === "Premium"
-                ? "bg-gradient-to-tr from-purple-600/20 to-cyan-700/20 border-purple-600/50 border-2"
-                : "bg-gradient-to-tr from-purple-950/10 to-cyan-600/10 border-purple-800/20 border"
-            } shadow-sm shadow-gray-800 bg-transparent flex flex-col min-h-[12rem] w-full p-10 rounded-lg backdrop-blur-xl`}
-            key={product.id}
-          >
-            {product.attributes.name === "Premium" && (
-              <div className="absolute right-0 top-0">
-                <p className="px-4 py-2 bg-purple-800 rounded-lg flex items-center">
-                  Most popular{" "}
-                  <Stars className="w-4 h-4 text-purple-400 ml-2" />
-                </p>
-              </div>
-            )}
+        <>
+          <Card className="text-card-foreground bg-gradient-to-tr from-purple-950/10 to-cyan-600/10 border-purple-800/20 border shadow-sm shadow-gray-800 bg-transparent flex flex-col min-h-[12rem] w-full p-10 rounded-lg backdrop-blur-xl">
             <div>
               <CardTitle className="text-base items-start font-light flex-col space-x-2">
-                {product.attributes.name} Plan
+                Free Plan
                 <div className="flex items-end mt-2 font-semibold">
-                  <p className="text-3xl ">
-                    {product.attributes.price_formatted.split("/")[0]}
-                  </p>
-                  {product.attributes.price_formatted.split("/")[1] && (
-                    <p className="text-base text-purple-600">
-                      /{product.attributes.price_formatted.split("/")[1]}
-                    </p>
-                  )}
+                  <p className="text-3xl">Free</p>
                 </div>
               </CardTitle>
               <div className="w-full py-2 space-x-2 flex items-center">
@@ -111,27 +65,79 @@ const Pricing = ({ session }: any) => {
               </div>
 
               <CardContent className="p-0 max-h-max">
-                {renderBenefits(product.attributes.name)}
+                {renderBenefits("Free")}
               </CardContent>
             </div>
             <CardFooter className="pt-4 px-0 pb-0">
               <GradientButton
-                onClick={() => {
-                  if (!session) router.push("/login");
-                  handleSubscription(
-                    id,
-                    product.id,
-                    product.attributes.store_id
-                  );
-                }}
+                onClick={() => !session && router.push("/register")}
               >
-                Buy Now
+                Choose Free Plan
               </GradientButton>
             </CardFooter>
           </Card>
-        ))
+          {products.map((product) => (
+            <Card
+              className={`${
+                product.attributes.name === "Premium"
+                  ? "bg-gradient-to-tr from-purple-600/20 to-cyan-700/20 border-purple-600/50 border-2"
+                  : "bg-gradient-to-tr from-purple-950/10 to-cyan-600/10 border-purple-800/20 border"
+              } shadow-sm shadow-gray-800 bg-transparent flex flex-col min-h-[12rem] w-full p-10 rounded-lg backdrop-blur-xl`}
+              key={product.id}
+            >
+              {product.attributes.name === "Premium" && (
+                <div className="absolute right-0 top-0">
+                  <p className="px-4 py-2 bg-purple-800 rounded-lg flex items-center">
+                    Most popular{" "}
+                    <Stars className="w-4 h-4 text-purple-400 ml-2" />
+                  </p>
+                </div>
+              )}
+              <div>
+                <CardTitle className="text-base items-start font-light flex-col space-x-2">
+                  {product.attributes.name} Plan
+                  <div className="flex items-end mt-2 font-semibold">
+                    <p className="text-3xl ">
+                      {product.attributes.price_formatted.split("/")[0]}
+                    </p>
+                    {product.attributes.price_formatted.split("/")[1] && (
+                      <p className="text-base text-purple-600">
+                        /{product.attributes.price_formatted.split("/")[1]}
+                      </p>
+                    )}
+                  </div>
+                </CardTitle>
+                <div className="w-full py-2 space-x-2 flex items-center">
+                  <hr className="border-zinc-800 w-full h-0.5" />
+                  <p className="text-sm font-light text-zinc-500">Features</p>
+                  <hr className="border-zinc-800 w-full h-0.5" />
+                </div>
+
+                <CardContent className="p-0 max-h-max">
+                  {renderBenefits(product.attributes.name)}
+                </CardContent>
+              </div>
+              <CardFooter className="pt-4 px-0 pb-0">
+                <GradientButton
+                  onClick={() => {
+                    if (!session) router.push("/login");
+                    handleSubscription(
+                      id,
+                      product.id,
+                      product.attributes.store_id
+                    );
+                  }}
+                >
+                  Buy Now
+                </GradientButton>
+              </CardFooter>
+            </Card>
+          ))}
+        </>
       ) : (
-        <p>No products available</p>
+        Array.from({ length: 3 }).map((_, index:number) => (
+          <Skeleton key={index} className="h-96 bg-gradient-to-tr from-purple-900/10 bg-transparent to-cyan-800/10 animate-pulse w-full" />
+        ))
       )}
     </div>
   );

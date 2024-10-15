@@ -26,7 +26,7 @@ export const authOptions: NextAuthOptions = {
           name: firstName || profile.name,
           lastname: lastName.join(" ") || "",
           image: profile.picture,
-          provider: "google"
+          provider: "google",
         };
       },
     }),
@@ -63,7 +63,7 @@ export const authOptions: NextAuthOptions = {
           email: existingUser.email + "",
           name: existingUser.name + "",
           lastname: existingUser.lastname + "",
-          provider: "credentials"
+          provider: "credentials",
         };
       },
     }),
@@ -77,7 +77,7 @@ export const authOptions: NextAuthOptions = {
           email: user.email,
           name: user.name,
           lastname: user.lastname,
-          provider: user.provider
+          provider: user.provider,
         };
       }
       if (trigger === "update" && session) {
@@ -99,7 +99,7 @@ export const authOptions: NextAuthOptions = {
           name: token.name,
           lastname: token.lastname,
           email: token.email,
-          provider: token.provider
+          provider: token.provider,
         },
       };
     },

@@ -4,13 +4,15 @@ import React, { ReactNode } from "react";
 interface GradientLinkProps {
   href: string; // Required prop for the link URL
   children: ReactNode; // Required prop for the link content
-  className?: string; // Optional prop for additional CSS class names
+  className?: string;
+ // Optional prop for additional CSS class names
 }
 
 const GradientLink: React.FC<GradientLinkProps> = ({
   href,
   children,
   className,
+
 }) => {
   return (
     <Link

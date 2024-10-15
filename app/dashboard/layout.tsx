@@ -14,8 +14,9 @@ interface DashboardLayoutProps {
 const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
   const session = await getServerSession(authOptions);
   const subscription = session
-  ? await getUserSubscriptionPlan(session?.user.id + "")
-  : null;
+    ? await getUserSubscriptionPlan(session?.user.id + "")
+    : null;
+
   return (
     <main>
       <Sidebar />

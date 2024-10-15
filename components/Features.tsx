@@ -30,7 +30,7 @@ const Features = () => {
         <h1 className="text-5xl font-semibold bg-gradient-to-b from-gray-300 to-purple-300 bg-clip-text text-transparent">
           Powerful features to help you build your menu fast
         </h1>
-        <p className="text-lg md:text-sm ml-0 md:w-2/3 text-gray-500">
+        <p className="text-lg md:mt-0 mt-4 md:text-sm ml-0 md:w-2/3 text-gray-500">
           Our features make menu creation easy and efficient. From adding images
           to generating QR codes and customizing themes, everything is built to
           simplify your workflow.

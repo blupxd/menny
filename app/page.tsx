@@ -1,4 +1,5 @@
 import Features from "@/components/Features";
+import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
 import Info from "@/components/Info";
 import MobileNav from "@/components/MobileNav";
@@ -15,16 +16,17 @@ export default async function Home() {
       <Navbar />
       <MobileNav />
       <Hero />
-      <div className="px-4 md:px-24 flex flex-col z-10">
+      <div className="px-4 md:px-24 flex flex-col pb-10 z-10">
         <Info />
         <Features />
         <Pricing session={session} />
       </div>
+      <Footer />
       <Image
         alt="background"
-        src="/assets/background.jpg"
+        src="/assets/bg.jpg"
         fill
-        className="object-cover opacity-50"
+        className="object-cover opacity-20"
         unoptimized={true}
       />
     </div>
