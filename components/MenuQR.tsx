@@ -8,8 +8,6 @@ import {
   CardTitle,
 } from "./ui/card";
 import QRCode from "react-qr-code";
-import GradientLink from "./GradientLink";
-import Link from "next/link";
 import GradientButton from "./GradientButton";
 
 const MenuQR = () => {
