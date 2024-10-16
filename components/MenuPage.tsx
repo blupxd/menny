@@ -82,7 +82,7 @@ const MenuPage = ({ plan }: any) => {
             </CardDescription>
           </CardHeader>
           <CardContent className="flex items-center justify-center flex-col">
-          {(menus === 1 && plan === "free" || menus === 3 && plan === "standard" || menus === 5 && plan === "premium") && <p className="text-xs -mt-4 pb-4 text-purple-300">You've reached your maximum 😔</p>}
+          {(menus === 1 && plan === "free" || menus === 3 && plan === "standard" || menus === 5 && plan === "premium") && <p className="text-xs -mt-4 pb-4 text-purple-300">You&apos;ve reached your maximum 😔</p>}
             <Button
               onClick={togglePopup}
               disabled={menus === 1 && plan === "free" || menus === 3 && plan === "standard" || menus === 5 && plan === "premium"}

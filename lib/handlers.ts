@@ -1,6 +1,5 @@
-import { Category, getServerSession } from "next-auth";
-import { authOptions } from "./auth";
-import { getUserSubscriptionPlan } from "./subscriptions";
+import { Category } from "next-auth";
+
 
 export const deleteMenu = async (menuId: string) => {
   try {
