@@ -24,6 +24,7 @@ export const authOptions: NextAuthOptions = {
           id: profile.sub,
           email: profile.email,
           name: firstName || profile.name,
+          subscriptionId: profile.subscriptionId,
           lastname: lastName.join(" ") || "",
           image: profile.picture,
           provider: "google",
@@ -63,6 +64,7 @@ export const authOptions: NextAuthOptions = {
           email: existingUser.email + "",
           name: existingUser.name + "",
           lastname: existingUser.lastname + "",
+          subscriptionId: existingUser.subscriptionId,
           provider: "credentials",
         };
       },
@@ -78,19 +80,21 @@ export const authOptions: NextAuthOptions = {
           name: user.name,
           lastname: user.lastname,
           provider: user.provider,
+          subscriptionId: user.subscriptionId
         };
       }
       if (trigger === "update" && session) {
-        console.log(session);
         token.name = session.name;
         token.lastname = session.lastname;
         token.email = session.email;
         token.picture = session.image;
+        token.subscriptionId = session.subscriptionId;
       }
 
       return token;
     },
     async session({ session, token }) {
+      console.log(session)
       return {
         ...session,
         user: {
@@ -100,6 +104,7 @@ export const authOptions: NextAuthOptions = {
           lastname: token.lastname,
           email: token.email,
           provider: token.provider,
+          subscriptionId: token.subscriptionId
         },
       };
     },

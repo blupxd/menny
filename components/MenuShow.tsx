@@ -26,7 +26,7 @@ interface menuData {
   menuType: string;
   categories: Category[];
 }
-const MenuShow = () => {
+const MenuShow = ({isPro}: any) => {
   const [menuData, setMenuData] = useState<menuData | null>(null);
   const params = useParams();
   const { setCols } = useStoreCols();
@@ -72,7 +72,7 @@ const MenuShow = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <CreatorNav name={menuData?.menuName} id={menuData?.id} />
-      <MenuCreator categoriesProps={menuData?.categories} />
+      <MenuCreator isPro={isPro} categoriesProps={menuData?.categories} />
     </div>
   );
 };

@@ -42,8 +42,8 @@ interface Category {
   items: Item[];
 }
 
-const MenuCreator = ({ categoriesProps }: any) => {
-  const [deleteMenu, setDeleteMenu] = useState<boolean>(false)
+const MenuCreator = ({ categoriesProps, isPro }: any) => {
+  const [deleteMenu, setDeleteMenu] = useState<boolean>(false);
   const params = useParams();
   const {
     categories,
@@ -191,11 +191,13 @@ const MenuCreator = ({ categoriesProps }: any) => {
             if (categoryIndex === actionState.toggleEditItem.categoryIndex) {
               return {
                 ...category,
-                items: category.items.map((item: Item, itemIndex: number | null) => {
-                  return itemIndex === actionState.toggleEditItem.itemIndex
-                    ? newItem
-                    : item;
-                }),
+                items: category.items.map(
+                  (item: Item, itemIndex: number | null) => {
+                    return itemIndex === actionState.toggleEditItem.itemIndex
+                      ? newItem
+                      : item;
+                  }
+                ),
               };
             }
             return category;
@@ -284,7 +286,9 @@ const MenuCreator = ({ categoriesProps }: any) => {
               >
                 <SortableContext
                   strategy={rectSwappingStrategy}
-                  items={category.items.map((_, idx: number) => `${index}-${idx}`)}
+                  items={category.items.map(
+                    (_, idx: number) => `${index}-${idx}`
+                  )}
                 >
                   {category.items.length > 0 &&
                     category.items.map((item: any, idx: number) =>
@@ -292,6 +296,7 @@ const MenuCreator = ({ categoriesProps }: any) => {
                       actionState.toggleEditItem.itemIndex === idx ? (
                         <div className="flex flex-col" key={idx}>
                           <ItemEditForm
+                            isPro={isPro}
                             key={idx}
                             itemValues={item}
                             handleEditItem={handleEditItem}
@@ -318,6 +323,7 @@ const MenuCreator = ({ categoriesProps }: any) => {
                         </div>
                       ) : (
                         <SortableItem
+                          isPro={isPro}
                           setActionState={(e: any) => setActionState(e)}
                           handleDeleteItem={handleDeleteItem}
                           deleteItem={actionState.deleteItem}
@@ -334,6 +340,7 @@ const MenuCreator = ({ categoriesProps }: any) => {
               {actionState.toggleNewItem.categoryIndex === index ? (
                 <div className="flex flex-col w-full">
                   <NewItemForm
+                  isPro={isPro}
                     category={category.categoryName}
                     handleAddItem={(e: any) => handleAddItem(e, index)}
                   />
@@ -399,7 +406,7 @@ const MenuCreator = ({ categoriesProps }: any) => {
                   </Button>
                   <Button
                     onClick={() =>
-                      setActionState((prev:any) => ({
+                      setActionState((prev: any) => ({
                         ...prev,
                         deleteCategory: { categoryIndex: null },
                       }))
@@ -441,7 +448,11 @@ const MenuCreator = ({ categoriesProps }: any) => {
       )}
 
       <div className="flex space-x-4 fixed right-8 bottom-8">
-        <MenuDelete onClose={() => setDeleteMenu(false)} id={params.menuId+""} show={deleteMenu} />
+        <MenuDelete
+          onClose={() => setDeleteMenu(false)}
+          id={params.menuId + ""}
+          show={deleteMenu}
+        />
         <Button
           disabled={save}
           onClick={saveChanges}
@@ -451,7 +462,12 @@ const MenuCreator = ({ categoriesProps }: any) => {
           {loading && <Loader2 className="w-4 h-4 animate-spin mr-2" />}
           Save <Save className="h-4 w-4 ml-2" />
         </Button>
-        <Button onClick={() => setDeleteMenu(true)} variant="destructive" className="bg-red-600" size="icon">
+        <Button
+          onClick={() => setDeleteMenu(true)}
+          variant="destructive"
+          className="bg-red-600"
+          size="icon"
+        >
           <Trash className="h-4 w-4" />
         </Button>
       </div>

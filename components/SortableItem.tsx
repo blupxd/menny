@@ -3,6 +3,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { Edit, Grip, ImagePlus, Trash, X } from "lucide-react";
 import Image from "next/image";
 import { Button } from "./ui/button";
+import Pro from "./Pro";
 
 interface Item {
   image: File | string; // Item image can be a File object or a string (URL)
@@ -19,6 +20,7 @@ interface Theme {
 }
 
 interface SortableItemProps {
+  isPro: boolean
   item: Item; // The item being sorted
   idx: number; // Index of the item in the list
   index: number; // Current index from the sortable context
@@ -34,12 +36,12 @@ const SortableItem: React.FC<SortableItemProps> = ({
   index,
   theme,
   handleDeleteItem,
+  isPro,
   deleteItem,
   setActionState,
 }) => {
   const { attributes, listeners, setNodeRef, transform, active, transition } =
     useSortable({ id: `${index}-${idx}` });
-
   // Function to convert a File to a URL
   const convertFileToUrl = (file: File): string => URL.createObjectURL(file);
 
@@ -52,7 +54,7 @@ const SortableItem: React.FC<SortableItemProps> = ({
       toggleEditItem: { categoryIndex, itemIndex },
     }));
   };
-
+  
   const handleSetDeleteItem = (
     categoryIndex: number | null,
     itemIndex: number | null
@@ -62,7 +64,6 @@ const SortableItem: React.FC<SortableItemProps> = ({
       deleteItem: { categoryIndex, itemIndex },
     }));
   };
-
   // Determine if item.image is a File or a string (URL)
   const imageUrl =
     item.image instanceof File ? convertFileToUrl(item.image) : item.image;
@@ -79,7 +80,7 @@ const SortableItem: React.FC<SortableItemProps> = ({
       className="w-full relative max-h-max flex lg:flex-row flex-col items-start lg:space-x-4 p-4 rounded-lg border bg-black/50"
     >
       {item.image ? (
-        <div className="w-20 h-20 rounded-lg relative overflow-hidden">
+        <div className="w-24 h-20 rounded-lg relative overflow-hidden">
           <Image
             src={imageUrl} // Use the appropriate image URL (either converted or directly from string)
             alt={item.itemName}
@@ -100,6 +101,7 @@ const SortableItem: React.FC<SortableItemProps> = ({
           } w-full lg:w-20 h-20 transition-all duration-100 ease-in-out flex items-center justify-center`}
         >
           <ImagePlus className="w-10 h-10" />
+          <Pro isPro={isPro}/>
         </Button>
       )}
       <div className="flex flex-col w-full mt-4 lg:-mt-1 flex-grow lg:h-20">

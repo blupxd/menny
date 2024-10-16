@@ -72,7 +72,6 @@ export async function DELETE(req: Request) {
   }
 }
 
-
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions);
   try {
@@ -86,21 +85,68 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "Unauthorized", status: 400 });
     }
     const userId = session.user?.id;
-    console.log(userId);
-    const newMenu = await db.menu.create({
-      data: {
-        menuName,
-        user: {
-          connect: { id: userId },
-        },
+    const user = await db.user.findUnique({ where: { id: userId } });
+    const numberOfMenus = await db.menu.count({
+      where: {
+        userId: userId,
       },
     });
+    if (user?.plan === "standard" && numberOfMenus < 3) {
+      const newMenu = await db.menu.create({
+        data: {
+          menuName,
+          user: {
+            connect: { id: userId },
+          },
+        },
+      });
+      return NextResponse.json(
+        {
+          menu: newMenu,
+          message: "Successfully created new menu!",
+        },
+        { status: 201 }
+      );
+    }
+    else if (user?.plan === "free" && numberOfMenus < 1) {
+      const newMenu = await db.menu.create({
+        data: {
+          menuName,
+          user: {
+            connect: { id: userId },
+          },
+        },
+      });
+      return NextResponse.json(
+        {
+          menu: newMenu,
+          message: "Successfully created new menu!",
+        },
+        { status: 201 }
+      );
+    }
+    else if (user?.plan === "premium" && numberOfMenus < 5) {
+      const newMenu = await db.menu.create({
+        data: {
+          menuName,
+          user: {
+            connect: { id: userId },
+          },
+        },
+      });
+      return NextResponse.json(
+        {
+          menu: newMenu,
+          message: "Successfully created new menu!",
+        },
+        { status: 201 }
+      );
+    }
     return NextResponse.json(
       {
-        menu: newMenu,
-        message: "Successfully created new menu!",
+        message: "You have reached the maximum number of menus for your plan!",
       },
-      { status: 201 }
+      { status: 403 }
     );
   } catch (error: unknown) {
     const errorMessage =

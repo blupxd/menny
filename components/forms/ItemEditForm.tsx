@@ -4,21 +4,25 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Form } from "@/components/ui/form";
 import CustomFormField, { FormFieldType } from "../CustomFormField";
-import { Coins, Edit } from "lucide-react";
+import { Coins, Edit, Image } from "lucide-react";
 import { Button } from "../ui/button";
 import { useGenerationStore } from "@/lib/themeSelect";
 import { FileUploader } from "../FileUploader";
+import Pro from "../Pro";
 
 // Define the schema for the form
 const formSchema = z.object({
   itemName: z.string().min(3, { message: "This field has to be filled." }),
   image: z.any(),
-  itemDescription: z.string().max(300, { message: "Your description is too long." }),
+  itemDescription: z
+    .string()
+    .max(300, { message: "Your description is too long." }),
   price: z.string().min(1, { message: "You have to enter a value" }),
 });
 
 // Define the props for the ItemEditForm component
 interface ItemEditFormProps {
+  isPro: boolean;
   handleEditItem: (item: {
     itemName: string;
     itemDescription: string;
@@ -35,7 +39,11 @@ interface ItemEditFormProps {
   };
 }
 
-const ItemEditForm: React.FC<ItemEditFormProps> = ({ handleEditItem, itemValues }) => {
+const ItemEditForm: React.FC<ItemEditFormProps> = ({
+  isPro,
+  handleEditItem,
+  itemValues,
+}) => {
   const { theme } = useGenerationStore();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -69,13 +77,21 @@ const ItemEditForm: React.FC<ItemEditFormProps> = ({ handleEditItem, itemValues 
         className="w-full flex md:flex-row flex-col items-start lg:space-x-4 p-4 text-white rounded-lg border bg-black/50"
         onSubmit={form.handleSubmit(onSubmit)}
       >
-        <FileUploader
-          image={itemValues.image}
-          onChange={(files) => {
-            const image = files.length > 0 ? files[0] : null;
-            form.setValue("image", image);
-          }}
-        />
+        {isPro ? (
+          <FileUploader
+            image={itemValues.image}
+            onChange={(files) => {
+              const image = files.length > 0 ? files[0] : null;
+              form.setValue("image", image);
+            }}
+          />
+        ) : (
+          <div className="p-2 bg-gradient-to-tr from-purple-800/10 to-cyan-800/10 border-purple-500 flex-col relative rounded-md border flex items-center justify-center">
+            <Image className="w-8 h-8 text-purple-300" />
+            <p className="text-xs text-center text-purple-300">Subscribe to unlock</p>
+            <Pro isPro={isPro} />
+          </div>
+        )}
         <div className="flex flex-col h-full lg:mt-0 mt-4 justify-between space-y-4 w-full">
           <div className="flex lg:flex-row flex-col lg:space-x-4 lg:space-y-0 space-y-4">
             <CustomFormField
@@ -106,7 +122,8 @@ const ItemEditForm: React.FC<ItemEditFormProps> = ({ handleEditItem, itemValues 
                 color: theme?.text,
               }}
               className={`h-full ${
-                theme && "hover:opacity-80 transition-all duration-200 ease-in-out"
+                theme &&
+                "hover:opacity-80 transition-all duration-200 ease-in-out"
               }`}
               variant="outline"
               type="submit"

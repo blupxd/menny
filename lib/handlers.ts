@@ -1,4 +1,6 @@
-import { Category } from "next-auth";
+import { Category, getServerSession } from "next-auth";
+import { authOptions } from "./auth";
+import { getUserSubscriptionPlan } from "./subscriptions";
 
 export const deleteMenu = async (menuId: string) => {
   try {
@@ -57,11 +59,20 @@ export const updateMenu = async (
   menuName: string
 ) => {
   try {
+    let plan = false
+    const res = await fetch("/api/auth/user", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },  
+    })
+    if(res.ok) {
+      const body = await res.json()
+      plan = body.plan === "premium" || body.plan === "standard"
+    }
     const categoriesWithImageURLs = await Promise.all(
       categories.map(async (category: Category) => {
         const updatedItems = await Promise.all(
           category.items.map(async (item: any) => {
-            if (item.image && item.image instanceof File) {
+            if (plan && item.image && item.image instanceof File) {
               const newUrl = await uploadImage(item.image);
               return {
                 ...item,

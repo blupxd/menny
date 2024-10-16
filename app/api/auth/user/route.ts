@@ -5,6 +5,28 @@ import * as z from "zod";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
+export async function GET(req: Request) {
+  try {
+    const session = await getServerSession(authOptions);
+
+    if (!session) {
+      return NextResponse.json({ user: null }, { status: 200 });
+    }
+
+    const userId = session.user.id;
+
+    const user = await db.user.findUnique({
+      where: { id: userId },
+    });
+    if (user) return NextResponse.json({ plan: user.plan }, { status: 200 });
+  } catch (error: unknown) {
+    console.error("Error details:", error);
+    const errorMessage =
+      error instanceof Error ? error.message : "An error occurred!";
+    return NextResponse.json({ message: errorMessage }, { status: 500 });
+  }
+}
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();
@@ -46,7 +68,7 @@ export async function POST(req: Request) {
         name,
         lastname,
         terms,
-        provider: 'credentials'
+        provider: "credentials",
       },
     });
 
@@ -66,8 +88,14 @@ export async function PATCH(req: Request) {
   try {
     const body = await req.json();
     const userSchema = z.object({
-      name: z.string().min(1, { message: "This field has to be filled." }).optional(),
-      lastname: z.string().min(1, { message: "This field has to be filled." }).optional(),
+      name: z
+        .string()
+        .min(1, { message: "This field has to be filled." })
+        .optional(),
+      lastname: z
+        .string()
+        .min(1, { message: "This field has to be filled." })
+        .optional(),
       email: z.string().email("This is not a valid email.").optional(),
       image: z.string().optional(), // Assuming profilePicture is a URL
     });
@@ -77,7 +105,7 @@ export async function PATCH(req: Request) {
 
     // Get the current user session
     const session = await getServerSession(authOptions);
-console.log(body)
+    console.log(body);
     // Ensure the user is logged in
     if (!session) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -130,4 +158,3 @@ console.log(body)
     return NextResponse.json({ message: errorMessage }, { status: 500 });
   }
 }
-

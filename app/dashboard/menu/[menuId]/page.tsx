@@ -6,9 +6,28 @@ import React, { useEffect, useState } from "react";
 
 const Page = () => {
   const [showMenu, setShowMenu] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true); // New state for loading
+  const [loading, setLoading] = useState<boolean>(true);
+  const [isPro, setIsPro] = useState<boolean>(false)// New state for loading
   const params = useParams();
-
+  const fetchPlan = async () => {
+    try {
+      const res = await fetch('/api/auth/user', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+      if(res.ok) {
+        const data = await res.json();
+        if(data.plan === "premium" || data.plan === "standard") {
+          setIsPro(true);
+        }
+      }
+    }
+      catch (error: unknown) {
+        console.error(error);
+    }
+  }
   const fetchData = async () => {
     try {
       setLoading(true); // Start loading
@@ -34,6 +53,7 @@ const Page = () => {
 
   useEffect(() => {
     fetchData();
+    fetchPlan()
   }, []);
 
   if (loading) {
@@ -45,7 +65,7 @@ const Page = () => {
   }
 
   return showMenu ? (
-    <MenuShow />
+    <MenuShow isPro={isPro}/>
   ) : (
     <div className="flex items-center justify-center w-full h-screen">
       <h1 className="text-2xl text-center">Either this is not your menu or this menu does not exist</h1>

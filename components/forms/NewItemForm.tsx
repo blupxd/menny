@@ -5,10 +5,11 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Form } from "@/components/ui/form";
 import CustomFormField, { FormFieldType } from "../CustomFormField";
-import { Coins, Plus } from "lucide-react";
+import { Coins, Image, Plus } from "lucide-react";
 import { Button } from "../ui/button";
 import { useGenerationStore } from "@/lib/themeSelect";
 import { FileUploader } from "../FileUploader";
+import Pro from "../Pro";
 
 // Define the schema for the form
 const formSchema = z.object({
@@ -22,8 +23,7 @@ const formSchema = z.object({
 
 // Define the props for the NewItemForm component
 
-
-const NewItemForm = ({ handleAddItem }: any) => {
+const NewItemForm = ({ handleAddItem, isPro }: any) => {
   const { theme } = useGenerationStore();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -57,13 +57,23 @@ const NewItemForm = ({ handleAddItem }: any) => {
         className="w-full flex md:flex-row flex-col items-start lg:space-x-4 p-4 rounded-lg border bg-black/50"
         onSubmit={form.handleSubmit(onSubmit)}
       >
-        <FileUploader
-          image={""}
-          onChange={(files) => {
-            const image = files.length > 0 ? files[0] : null;
-            form.setValue("image", image);
-          }}
-        />
+        {isPro ? (
+          <FileUploader
+            image={""}
+            onChange={(files) => {
+              const image = files.length > 0 ? files[0] : null;
+              form.setValue("image", image);
+            }}
+          />
+        ) : (
+          <div className="p-2 bg-gradient-to-tr from-purple-800/10 to-cyan-800/10 border-purple-500 flex-col relative rounded-md border flex items-center justify-center">
+            <Image className="w-8 h-8 text-purple-300" />
+            <p className="text-xs text-center text-purple-300">
+              Subscribe to unlock
+            </p>
+            <Pro isPro={isPro} />
+          </div>
+        )}
         <div className="flex flex-col h-full lg:mt-0 mt-4 justify-between space-y-4 w-full">
           <div className="flex lg:flex-row flex-col lg:space-x-4 lg:space-y-0 space-y-4">
             <CustomFormField
