@@ -3,9 +3,16 @@ import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import CategoryCard from "../../../components/CategoryCard";
 import Image from "next/image";
+import { Loader2 } from "lucide-react";
 
 // Define possible themes as a union type
-type Theme = "candy" | "aquamarine" | "lighting" | "gravestone" | "candycane";
+type Theme =
+  | "default"
+  | "candy"
+  | "aquamarine"
+  | "lighting"
+  | "gravestone"
+  | "candycane";
 
 interface MenuData {
   menuName: string;
@@ -63,6 +70,12 @@ const Page = () => {
     Theme,
     { primary: string; secondary: string; light: string; dark: string }
   > = {
+    default: {
+      primary: "",
+      secondary: "",
+      light: "",
+      dark: "",
+    },
     candy: {
       primary: "#f3de4a",
       secondary: "#ebe191",
@@ -99,11 +112,77 @@ const Page = () => {
     // Check if the menuData theme exists in the colors object
     return menuData?.theme && colors[menuData.theme]
       ? colors[menuData.theme]
-      : colors.candy; // Fallback to candy theme
+      : colors.default; // Fallback to candy theme
   };
 
   const colorsSelected = themeColors(); // Get the theme colors
-
+  const themeBackground = () => {
+    switch (menuData?.menuType) {
+      case "Cafe":
+        return (
+          <Image
+            alt="bg"
+            src="/assets/menuTypes/Cafe.jpg"
+            fill
+            className="object-cover opacity-5"
+          />
+        );
+      case "Pub":
+        return (
+          <Image
+            alt="bg"
+            src="/assets/menuTypes/Pub.jpg"
+            fill
+            className="object-cover opacity-5"
+          />
+        );
+      case "Fast Food":
+        return (
+          <Image
+            alt="bg"
+            src="/assets/menuTypes/Fastfood.jpg"
+            fill
+            className="object-cover opacity-5"
+          />
+        );
+      case "Restauraunt":
+        return (
+          <Image
+            alt="bg"
+            src="/assets/menuTypes/restauraunt.jpg"
+            fill
+            className="object-cover opacity-5"
+          />
+        );
+      case "Sushi Restauraunt":
+        return (
+          <Image
+            alt="bg"
+            src="/assets/menuTypes/Sushi.jpg"
+            fill
+            className="object-cover opacity-5"
+          />
+        );
+      case "Vegan Restauraunt":
+        return (
+          <Image
+            alt="bg"
+            src="/assets/menuTypes/vegan.jpg"
+            fill
+            className="object-cover opacity-5"
+          />
+        );
+      default:
+        return (
+          <Image
+            alt="bg"
+            src="/assets/dummy.jpg"
+            fill
+            className="object-cover opacity-5"
+          />
+        );
+    }
+  };
   return menuData?.categories ? (
     <div
       className="flex flex-col p-4 md:p-12 min-h-screen relative"
@@ -114,7 +193,7 @@ const Page = () => {
       <div className="flex flex-col z-10 min-h-screen">
         <h1
           style={{ borderColor: colorsSelected.light }}
-          className="text-5xl border-b-2 text-center mx-auto pt-6 max-w-max pb-2 mb-12 font-black"
+          className="text-5xl border-b-2 text-center bg-gradient-to-b text-transparent from-white to-gray-300 bg-clip-text mx-auto pt-6 max-w-max pb-2 mb-12 font-black"
         >
           {menuData.menuName} MENU
         </h1>
@@ -127,10 +206,12 @@ const Page = () => {
           </p>
         </div>
       </div>
-      <Image alt="bg" src="/assets/dummy.jpg" fill className="object-cover opacity-5" />
+      {themeBackground()}
     </div>
   ) : (
-    <div>The menu is not completed yet</div>
+    <div className="flex items-center justify-center w-full h-screen">
+      <Loader2 className="w-16 h-16 animate-spin" />
+    </div>
   );
 };
 

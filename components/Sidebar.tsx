@@ -36,7 +36,7 @@ const Sidebar = async () => {
   };
   return (
     <div className="px-6 py-6 border-r md:flex hidden flex-col bg-gradient-to-tr from-purple-950/10 to-cyan-600/10 min-h-screen min-w-[300px] w-[300px] fixed">
-      <div className="flex items-center space-x-4">
+      <div className="flex mb-2 items-center space-x-4">
         <div className="rounded-full relative bg-purple-700 overflow-hidden h-8 w-8 flex items-center justify-center">
           {session?.user.image ? (
             <Image

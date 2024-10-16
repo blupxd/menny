@@ -7,6 +7,7 @@ import CustomFormField, { FormFieldType } from "../CustomFormField";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import GradientButton from "../GradientButton";
+import { useState } from "react";
 
 const formSchema = z.object({
   menuName: z.string().min(3, { message: "This field has to be filled." }),
@@ -14,6 +15,7 @@ const formSchema = z.object({
 
 const MenuForm = () => {
   const router = useRouter();
+  const [loading, setLoading] = useState<boolean>(false);
   const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -21,7 +23,11 @@ const MenuForm = () => {
       menuName: "",
     },
   });
+
+  const menuName = form.watch("menuName"); // Watch the menuName field
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    setLoading(true);
     const response = await fetch("/api/menu", {
       method: "POST",
       headers: {
@@ -31,9 +37,10 @@ const MenuForm = () => {
         menuName: values.menuName,
       }),
     });
+
     if (response.ok) {
-      const data = await response.json()
-      console.log(data)
+      const data = await response.json();
+      console.log(data);
       router.push(`/dashboard/menu/${data.menu.id}`);
     } else {
       toast({
@@ -43,9 +50,13 @@ const MenuForm = () => {
       });
     }
   };
+
   return (
     <Form {...form}>
-      <form className="w-96" onSubmit={form.handleSubmit(onSubmit)}>
+      <form
+        className="w-96"
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
         <div className="flex items-end space-x-4">
           <CustomFormField
             fieldType={FormFieldType.INPUT}
@@ -55,7 +66,8 @@ const MenuForm = () => {
             placeholder="Enter name for your new menu"
           />
           <GradientButton
-            isLoading={false}
+            disabled={menuName.length < 3} // Disable button until 3 characters are entered
+            isLoading={loading}
           >
             Create
           </GradientButton>

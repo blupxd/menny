@@ -29,6 +29,7 @@ const CategoryCard = ({ category, theme }: Props) => {
         background: theme.primary,
         borderColor: theme.dark,
       }}
+      className="my-4"
     >
       <CardHeader>
         <CardTitle className="text-3xl md:text-4xl font-dark italic text-center p-2 sm:p-6">
@@ -59,11 +60,11 @@ const CategoryCard = ({ category, theme }: Props) => {
                 <div className="flex flex-col md:flex-row md:items-center px-2 md:p-0 justify-around">
                   <h1 style={{
                     color: theme.light
-                  }} className="text-xs sm:text-base md:text-xl font-light">{item.itemName}</h1>
+                  }} className="text-xs sm:text-base md:text-xl font-semibold">{item.itemName}</h1>
                   <p style={{
                     color:theme.light,
                     borderColor: theme.primary
-                  }} className="font-bold mt-1 text-sm sm:text-base md:text-xl italic border-b-2 max-w-max">
+                  }} className="mt-1 text-sm sm:text-base md:text-xl italic border-b-2 max-w-max">
                     {item.price}
                   </p>
                 </div>

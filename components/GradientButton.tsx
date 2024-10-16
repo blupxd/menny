@@ -20,9 +20,8 @@ const GradientButton: React.FC<GradientButtonProps> = ({
   return (
     <Button
       variant="ghost"
-      
       onClick={onClick}
-      disabled={disabled}
+      disabled={disabled || isLoading}
       className={`${className} relative inline-flex items-center justify-center px-6 overflow-hidden font-bold text-white rounded-lg shadow-2xl group`}
     >
       <span className="absolute inset-0 w-full h-full transition duration-300 ease-out opacity-0 bg-gradient-to-br from-purple-950  to-cyan-950 group-hover:opacity-100"></span>

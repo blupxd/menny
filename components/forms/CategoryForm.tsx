@@ -39,7 +39,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ handleAddCategory }) => {
             label="Enter category name"
             placeholder="Enter name for your new category"
           />
-          <GradientButton isLoading={false}>
+          <GradientButton>
             Create
           </GradientButton>
         </div>
