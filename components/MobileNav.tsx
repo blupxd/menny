@@ -27,7 +27,7 @@ const MobileNav = () => {
   ];
 
   return (
-    <nav className="border-b border-purple-800/20 lg:hidden bg-stone-950/90 backdrop-blur-sm text-sm font-light w-full top-0 fixed px-4 py-2 flex justify-between items-center z-20">
+    <nav className="border-b border-purple-800/20 lg:hidden bg-stone-950/90 backdrop-blur-sm text-sm font-light w-full top-0 fixed px-4 py-4 flex justify-between items-center z-20">
       <Link className="text-lg" href="/">
         Menny
       </Link>
@@ -44,7 +44,7 @@ const MobileNav = () => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="flex absolute left-0 space-y-12 w-full h-screen bg-stone-950/90 p-12 inset-11 right-0 flex-col items-center z-10"
+            className="flex absolute left-0 space-y-12 w-full h-screen bg-stone-950/90 p-12 inset-16 right-0 flex-col items-center z-10"
           >
             {links.map((link, idx) => (
               <li key={idx} className="text-xl">
