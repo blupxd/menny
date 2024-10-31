@@ -24,7 +24,7 @@ const AboutUs = () => {
           <li>📈 Enhance customer engagement with instant access to your menu.</li>
         </ul>
         <p className="text-wrap mt-4 text-sm">
-          Join us in revolutionizing the dining experience. Whether you're a small café or a large restaurant, we have the tools you need to modernize your menu and attract more customers!
+          Join us in revolutionizing the dining experience. Whether you&apos;re a small café or a large restaurant, we have the tools you need to modernize your menu and attract more customers!
         </p>
       </div>
 

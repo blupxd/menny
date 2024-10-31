@@ -13,8 +13,8 @@ const page = () => {
       <div className="flex max-w-max flex-col z-10">
         <h1 className="text-5xl">Need Assistance?</h1>
         <p className="text-wrap mt-4 text-lg">
-          We're here to help! If you have any questions, concerns, or need
-          support, please don’t hesitate to reach out to us. Our team is ready
+          We&apos;re here to help! If you have any questions, concerns, or need
+          support, please don&apos;t hesitate to reach out to us. Our team is ready
           to assist you with any inquiries you may have.
         </p>
         <h2 className="text-purple-500 font-semibold mt-4">Contact Us:</h2>
