@@ -21,8 +21,8 @@ const MobileNav = () => {
       tag: "About us",
     },
     {
-      link: "/contact",
-      tag: "Contact",
+      link: "/customer-help",
+      tag: "Help",
     },
   ];
 

@@ -44,7 +44,7 @@ const Pricing = ({ session }: any) => {
   };
 
   return (
-    <div className="grid z-10 grid-cols-1 lg:grid-cols-3 gap-4 w-full">
+    <div className="grid z-10 grid-cols-1 lg:grid-cols-3 gap-4 pt-24 w-full">
       <h1 className="text-center md:col-span-3 text-5xl my-6 font-semibold bg-gradient-to-b from-gray-300 to-purple-300 bg-clip-text text-transparent">
         Plans and Prices
       </h1>

@@ -2,7 +2,7 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import { Button, buttonVariants } from "./ui/button";
-import { AlignLeft, EllipsisVertical, Plus, Stars, X } from "lucide-react";
+import { AlignLeft, Plus, Stars, X } from "lucide-react";
 import { Separator } from "./ui/separator";
 import Link from "next/link";
 import {
@@ -99,14 +99,6 @@ const MobileSidebar = ({ session, plan }: any) => {
                     </p>
                   )}
                 </div>
-
-                <Button
-                  onClick={() => setMenu(!menu)}
-                  variant="ghost"
-                  className="w-6 hover:bg-neutral-900 p-1 h-6 ml-auto"
-                >
-                  <EllipsisVertical />
-                </Button>
               </div>
 
               <div className="flex flex-col z-20">

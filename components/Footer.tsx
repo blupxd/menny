@@ -17,8 +17,8 @@ const Footer = () => {
       tag: "About us",
     },
     {
-      link: "/contact",
-      tag: "Contact",
+      link: "/customer-help",
+      tag: "Customer Help",
     },
   ];
   return (

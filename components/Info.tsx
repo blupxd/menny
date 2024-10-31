@@ -44,7 +44,7 @@ const Info = () => {
         <ul className="flex flex-col gap-y-6">
           {steps.map((step, idx) => (
             <li key={idx} className="flex space-x-2">
-              <h1 className="text-5xl font-black bg-gradient-to-br from-gray-300 to-purple-300 bg-clip-text text-transparent">{idx + 1}.</h1>
+              <h1 className="text-5xl w-12 font-black bg-gradient-to-br from-gray-300 to-purple-300 bg-clip-text text-transparent">{idx + 1}.</h1>
               <div className="flex flex-col">
                 <h2 className="text-xl bg-gradient-to-br from-gray-500 to-purple-300 bg-clip-text text-transparent font-semibold">{step.label}</h2>
                 <p className="text-sm text-gray-500">{step.description}</p>

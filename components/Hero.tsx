@@ -33,11 +33,12 @@ const Hero = () => {
         🍋 Powered by LemonSqueezy
         </div>
         <Image
-          src="/assets/hero.png"
+          src="/assets/hero.jpeg"
           alt="Hero Image"
-          width={1000}
-          height={1200}
-          className="rounded-2xl border-purple-800/20 border shadow-sm shadow-gray-700/20 mx-4 md:mx-24 lg:mx-auto"
+          width={1200}
+          height={500}
+          unoptimized
+          className="rounded-2xl border-purple-800/20 border shadow-sm shadow-gray-700/20"
         />
       </div>
     </main>

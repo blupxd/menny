@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
-import { Button, buttonVariants } from "./ui/button";
-import { EllipsisVertical, Plus, Stars } from "lucide-react";
+import { buttonVariants } from "./ui/button";
+import { Plus, Stars } from "lucide-react";
 import { Separator } from "./ui/separator";
 import Link from "next/link";
 import {
@@ -69,14 +69,6 @@ const Sidebar = async () => {
             </p>
           )}
         </div>
-
-        {/* Button Section */}
-        <Button
-          variant="ghost"
-          className="w-6 hover:bg-neutral-900 p-1 h-6 ml-auto"
-        >
-          <EllipsisVertical />
-        </Button>
       </div>
 
       <div className="flex flex-col">
